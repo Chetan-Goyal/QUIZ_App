@@ -1,4 +1,4 @@
-class questionsTrack {
+class QuestionsTrack {
 
   var currentIndex;
 
@@ -25,11 +25,11 @@ class questionsTrack {
         'Chrome OS'
       ],
   ];
-  questionsTrack() {
+  QuestionsTrack() {
     this.currentIndex = 0;
   } 
 
-  Function nextQuestion() {
+  void nextQuestion() {
     this.currentIndex += 1;
   }
 

@@ -1,33 +1,28 @@
 import "package:flutter/material.dart";
 import "./question.dart";
 import "./answer.dart";
-import "./questions.dart";
+import './questions.dart';
 
-void main() {
 
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
+
 
 class MyApp extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _MyAppState();
   }
 }
 
 
-
-
 class _MyAppState extends State<MyApp> {
 
-  questionsTrack QuestionsSet = questionsTrack();
+  QuestionsTrack questionsSet = QuestionsTrack();
   
   void _questionAnswered() {
-    setState(() { QuestionsSet.nextQuestion();
-              }
-            );
+    setState(() { questionsSet.nextQuestion();}
+    );
   }
 
   @override
@@ -42,28 +37,24 @@ class _MyAppState extends State<MyApp> {
 
           // Question Here
           Question(
-            QuestionsSet.currentQuestion(),
+            questionsSet.currentQuestion(),
           ),
           
           // First Option
-          Answer(_questionAnswered, QuestionsSet.option(1),),
+          Answer(_questionAnswered, questionsSet.option(1),),
 
           // Second Option
-          Answer(_questionAnswered, QuestionsSet.option(2),),
+          Answer(_questionAnswered, questionsSet.option(2),),
 
           // Third Option
-          Answer(_questionAnswered, QuestionsSet.option(3),),
+          Answer(_questionAnswered, questionsSet.option(3),),
 
           // Forth Option
-          Answer(_questionAnswered, QuestionsSet.option(4),),
+          Answer(_questionAnswered, questionsSet.option(4),),
           
         ],
-
       ),
-      
       )
     );
   }
-
-
 }
