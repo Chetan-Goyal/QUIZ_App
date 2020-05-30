@@ -17,6 +17,13 @@ class questionsTrack {
         'Python',
         'Dart',
       ],
+      [
+        'What\'s your favourite Working Environment?',
+        'Mac OS',
+        'Linux',
+        'Windows',
+        'Chrome OS'
+      ],
   ];
   questionsTrack() {
     this.currentIndex = 0;
@@ -24,7 +31,6 @@ class questionsTrack {
 
   Function nextQuestion() {
     this.currentIndex += 1;
-    print('${this.currentIndex}');
   }
 
   String currentQuestion() {

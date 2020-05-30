@@ -24,6 +24,12 @@ class _MyAppState extends State<MyApp> {
 
   questionsTrack QuestionsSet = questionsTrack();
   
+  void _questionAnswered() {
+    setState(() { QuestionsSet.nextQuestion();
+              }
+            );
+  }
+
   @override
   Widget build(BuildContext context){
 
@@ -40,16 +46,16 @@ class _MyAppState extends State<MyApp> {
           ),
           
           // First Option
-          Answer(QuestionsSet, 1),
+          Answer(_questionAnswered, QuestionsSet.option(1),),
 
           // Second Option
-          Answer(QuestionsSet, 2),
+          Answer(_questionAnswered, QuestionsSet.option(2),),
 
           // Third Option
-          Answer(QuestionsSet, 3),
+          Answer(_questionAnswered, QuestionsSet.option(3),),
 
           // Forth Option
-          Answer(QuestionsSet, 4),
+          Answer(_questionAnswered, QuestionsSet.option(4),),
           
         ],
 
