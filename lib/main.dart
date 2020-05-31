@@ -33,25 +33,17 @@ class _MyAppState extends State<MyApp> {
         title: Text('MY QUIZ APP'),
       ),
       body: Column(
-        children: <Widget>[
+        children: [
 
           // Question Here
           Question(
             questionsSet.currentQuestion(),
           ),
           
-          // First Option
-          Answer(_questionAnswered, questionsSet.option(1),),
+          ...(questionsSet.questions[questionsSet.currentIndex]['Options'] as List<String>).map( (answertext) {
+           return Answer(_questionAnswered, answertext);
+          }).toList()
 
-          // Second Option
-          Answer(_questionAnswered, questionsSet.option(2),),
-
-          // Third Option
-          Answer(_questionAnswered, questionsSet.option(3),),
-
-          // Forth Option
-          Answer(_questionAnswered, questionsSet.option(4),),
-          
         ],
       ),
       )

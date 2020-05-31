@@ -2,7 +2,7 @@ class QuestionsTrack {
 
   var currentIndex;
 
-  var questions = [
+  final questions = [
       {
         'QuestionText':'What\'s your favourite Colour?', 
         'Options':['Blue','Red','Green','Black']
