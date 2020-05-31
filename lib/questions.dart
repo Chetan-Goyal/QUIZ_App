@@ -3,27 +3,18 @@ class QuestionsTrack {
   var currentIndex;
 
   var questions = [
-      [
-        'What\'s your favourite Colour?', 
-        'Blue', 
-        'Red', 
-        'Green', 
-        'Black',
-      ], 
-      [
-        'What\'s your favourite language?',
-        'C++',
-        'JAVA',
-        'Python',
-        'Dart',
-      ],
-      [
-        'What\'s your favourite Working Environment?',
-        'Mac OS',
-        'Linux',
-        'Windows',
-        'Chrome OS'
-      ],
+      {
+        'QuestionText':'What\'s your favourite Colour?', 
+        'Options':['Blue','Red','Green','Black']
+      }, 
+      {
+        'QuestionText':'What\'s your favourite language?',
+        'Options':['C++','JAVA','Python','Dart']
+      },
+      {
+        'QuestionText':'What\'s your favourite Working Environment?',
+        'Options':['Mac OS','Linux','Windows','Chrome OS']
+      },
   ];
   QuestionsTrack() {
     this.currentIndex = 0;
@@ -34,11 +25,11 @@ class QuestionsTrack {
   }
 
   String currentQuestion() {
-    return questions[this.currentIndex][0];
+    return questions[this.currentIndex]['QuestionText'];
   }
 
   String option(int optionNumber) {
-    return questions[this.currentIndex][optionNumber];
+    return (questions[this.currentIndex]['Options'] as List)[optionNumber-1];
   }
 
 }
