@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Result_Uploader/upload.dart';
 
 class Result extends StatelessWidget {
   final int result;
@@ -19,6 +20,8 @@ class Result extends StatelessWidget {
     } else {
       finalResult = "You are amazing";
     }
+    Uploader uploader = Uploader("NOT FOUND", result);
+    uploader.upload();
     return finalResult;
   }
 
@@ -26,18 +29,35 @@ class Result extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-      Center(
-        child: Text(
-          resultText,
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
+        Center(
+          child: Text(
+            resultText,
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
-      ),
-      FlatButton(onPressed: resetQuiz, child: Text("Restart Quiz!!"))
-      ]
+        Center(
+          child: Text(
+            "\n\nScore: $result\n\n",
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Colors.red[400],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        FlatButton(
+          onPressed: resetQuiz,
+          child: Text("Restart Quiz!!"),
+          color: Colors.blue,
+          textColor: Colors.white,
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
     );
   }
 }

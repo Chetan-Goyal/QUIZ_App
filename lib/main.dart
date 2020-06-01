@@ -3,6 +3,7 @@ import './questions.dart';
 import "./quiz.dart";
 import 'result.dart';
 
+// * Main Function executing the program
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
