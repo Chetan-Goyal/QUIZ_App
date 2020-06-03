@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 
 class Answer extends StatelessWidget {
   final String answer;
@@ -13,7 +13,7 @@ class Answer extends StatelessWidget {
     var container = Container(
       child: RaisedButton(
         child: Text(this.answer),
-        onPressed: () => selectHandler(this.score),
+        onPressed: () => selectHandler(score, answer),
       ),
       width: 200,
     );
