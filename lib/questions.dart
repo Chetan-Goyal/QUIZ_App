@@ -42,25 +42,26 @@ class QuestionsTrack {
     return questions[this.currentIndex]["QuestionText"];
   }
 
-  List availableOptions({bool prevQues=false}) {
-    if ( prevQues == true) {
-      return questions[currentIndex-1]["Options"];
+  List availableOptions({bool prevQues = false}) {
+    if (prevQues == true) {
+      return questions[currentIndex - 1]["Options"];
     }
     return questions[currentIndex]["Options"];
   }
 
   String option(int optionNumber) {
-    return (questions[this.currentIndex]["Options"] as List)[optionNumber - 1]["OptionText"];
+    return (questions[this.currentIndex]["Options"] as List)[optionNumber - 1]
+        ["OptionText"];
   }
 
-  String correctOption({bool prevQues=false}) {
+  String correctOption({bool prevQues = false}) {
     int quesIndex;
     if (prevQues == true) {
       quesIndex = currentIndex - 1;
     } else {
       quesIndex = currentIndex;
     }
-    for (int i=0; i<4; i++) {
+    for (int i = 0; i < 4; i++) {
       int correct = (questions[quesIndex]["Options"] as List<Map>)[i]["Score"];
       if (correct == 100) {
         return (questions[quesIndex]["Options"] as List)[i]["OptionText"];

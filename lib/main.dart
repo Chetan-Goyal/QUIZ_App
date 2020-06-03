@@ -6,7 +6,6 @@ import 'result.dart';
 
 // * Main Function executing the program
 void main() {
-
   runApp(MyApp());
 }
 
@@ -24,7 +23,8 @@ class _MyAppState extends State<MyApp> {
   bool _answered = false;
 
   void _questionAnswered(int score, String answer) {
-    EachResult(_questionsSet.currentIndex, _questionsSet.availableOptions(), answer, _questionsSet);
+    EachResult(_questionsSet.currentIndex, _questionsSet.availableOptions(),
+        answer, _questionsSet);
     setState(() {
       this.answer = answer;
       _score += score;
@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     print(_answered);
-    if (_answered == false){
+    if (_answered == false) {
       _answered = true;
       return MaterialApp(
           home: Scaffold(
@@ -65,7 +65,11 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('MY QUIZ APP'),
         ),
-        body: EachResult(_questionsSet.currentIndex-1, _questionsSet.availableOptions(prevQues: true), answer, _questionsSet),
+        body: EachResult(
+            _questionsSet.currentIndex - 1,
+            _questionsSet.availableOptions(prevQues: true),
+            answer,
+            _questionsSet),
       ));
     }
   }
