@@ -22,11 +22,14 @@ class _MyAppState extends State<MyApp> {
   String answer;
   bool _answered = false;
 
-  void _questionAnswered(int score, String answer) {
-    EachResult(_questionsSet.currentIndex, _questionsSet.availableOptions(),
-        answer, _questionsSet);
+  void _questionAnswered(String answer) {
     setState(() {
       this.answer = answer;
+    });
+  }
+
+  void _nextQuestion(int score) {
+    setState(() {
       _score += score;
       _questionsSet.nextQuestion();
     });
@@ -41,7 +44,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print(_answered);
     if (_answered == false) {
       _answered = true;
       return MaterialApp(
@@ -66,10 +68,11 @@ class _MyAppState extends State<MyApp> {
           title: Text('MY QUIZ APP'),
         ),
         body: EachResult(
-            _questionsSet.currentIndex - 1,
-            _questionsSet.availableOptions(prevQues: true),
+            _questionsSet.currentIndex,
+            _questionsSet.availableOptions(),
             answer,
-            _questionsSet),
+            _questionsSet,
+            _nextQuestion),
       ));
     }
   }

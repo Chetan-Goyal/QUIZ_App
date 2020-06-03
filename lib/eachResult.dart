@@ -7,14 +7,16 @@ class EachResult extends StatelessWidget {
   final List options;
   final String answerChosen;
   final questionsObj;
+  final Function _answerShown;
 
   EachResult(
-      this.questionIndex, this.options, this.answerChosen, this.questionsObj);
+      this.questionIndex, this.options, this.answerChosen, this.questionsObj, this._answerShown);
 
   @override
   Widget build(BuildContext context) {
+
     // Question Here
-    String correctAnswer = questionsObj.correctOption(prevQues: true);
+    String correctAnswer = questionsObj.correctOption();
     List<Widget> a = [
       Question(
         questionsObj.questions[questionIndex]["QuestionText"],
@@ -29,7 +31,7 @@ class EachResult extends StatelessWidget {
             child: Text(option["OptionText"]),
             color: Colors.green[700],
             textColor: Colors.white,
-            onPressed: () => null,
+            onPressed: () => _answerShown(questionsObj.score(answerChosen)),
           ),
           width: 200,
         ));
@@ -40,7 +42,7 @@ class EachResult extends StatelessWidget {
             child: Text(option["OptionText"]),
             color: Colors.red[700],
             textColor: Colors.white,
-            onPressed: () => null,
+            onPressed: () => _answerShown(questionsObj.score(answerChosen)),
           ),
           width: 200,
         ));
@@ -49,7 +51,7 @@ class EachResult extends StatelessWidget {
           Container(
             child: RaisedButton(
               child: Text(option["OptionText"]),
-              onPressed: () => null,
+              onPressed: () => _answerShown(questionsObj.score(answerChosen)),
             ),
             width: 200,
           ),

@@ -12,7 +12,7 @@ class Answer extends StatelessWidget {
     var container = Container(
       child: RaisedButton(
         child: Text(this.answer),
-        onPressed: () => selectHandler(score, answer),
+        onPressed: () => selectHandler(answer),
       ),
       width: 200,
     );

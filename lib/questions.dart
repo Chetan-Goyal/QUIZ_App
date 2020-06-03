@@ -54,6 +54,17 @@ class QuestionsTrack {
         ["OptionText"];
   }
 
+  int score(String answerChosen) {
+    for (int i = 0; i < 4; i++) {
+      String chosen = (questions[currentIndex]["Options"] as List<Map>)[i]["OptionText"];
+      if (chosen == answerChosen) {
+        return (questions[currentIndex]["Options"] as List)[i]["Score"];
+      }
+    }
+    return -1;
+  }
+  
+
   String correctOption({bool prevQues = false}) {
     int quesIndex;
     if (prevQues == true) {
