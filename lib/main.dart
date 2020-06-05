@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import './questions.dart';
 import "./quiz.dart";
 import 'result.dart';
+import 'api-data.dart';
 
 // * Main Function executing the program
 void main() {
@@ -21,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   int _score = 0;
   String answer;
   bool _answered = false;
-
+  
   void _questionAnswered(String answer) {
     setState(() {
       this.answer = answer;
@@ -39,6 +40,8 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _score = 0;
       _questionsSet.currentIndex = 0;
+      _answered = false;
+      this.answer = null;
     });
   }
 
