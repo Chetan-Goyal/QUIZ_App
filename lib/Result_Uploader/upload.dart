@@ -18,14 +18,13 @@ class Uploader {
 
     params = params + "?name=$_name";
 
-    params = params + "&q1=${questions[0]["QuestionText"]}&a1=${questions[0]["CorrectOption"]}&as1=${answersSelected[0]}";
-    params = params + "&q2=${questions[1]["QuestionText"]}&a2=${questions[1]["CorrectOption"]}&as2=${answersSelected[1]}";
-    params = params + "&q3=${questions[2]["QuestionText"]}&a3=${questions[2]["CorrectOption"]}&as3=${answersSelected[2]}";
-    params = params + "&q4=${questions[3]["QuestionText"]}&a4=${questions[3]["CorrectOption"]}&as4=${answersSelected[3]}";
-    params = params + "&q5=${questions[4]["QuestionText"]}&a5=${questions[4]["CorrectOption"]}&as5=${answersSelected[4]}";
+    params = params + "&q1=${Uri.encodeComponent(questions[0]["QuestionText"])}&a1=${Uri.encodeComponent(questions[0]["CorrectOption"])}&as1=${Uri.encodeComponent(answersSelected[0])}";
+    params = params + "&q2=${Uri.encodeComponent(questions[1]["QuestionText"])}&a2=${Uri.encodeComponent(questions[1]["CorrectOption"])}&as2=${Uri.encodeComponent(answersSelected[1])}";
+    params = params + "&q3=${Uri.encodeComponent(questions[2]["QuestionText"])}&a3=${Uri.encodeComponent(questions[2]["CorrectOption"])}&as3=${Uri.encodeComponent(answersSelected[2])}";
+    params = params + "&q4=${Uri.encodeComponent(questions[3]["QuestionText"])}&a4=${Uri.encodeComponent(questions[3]["CorrectOption"])}&as4=${Uri.encodeComponent(answersSelected[3])}";
+    params = params + "&q5=${Uri.encodeComponent(questions[4]["QuestionText"])}&a5=${Uri.encodeComponent(questions[4]["CorrectOption"])}&as5=${Uri.encodeComponent(answersSelected[4])}";
     
     params = params + "&score=$_score";
-
     return params;
   }
 
