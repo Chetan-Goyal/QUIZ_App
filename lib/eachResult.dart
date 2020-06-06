@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import 'question.dart';
+import 'package:universal_html/html.dart' as html;
 
 class EachResult extends StatelessWidget {
   final int questionIndex;
@@ -11,6 +12,11 @@ class EachResult extends StatelessWidget {
 
   EachResult(
       this.questionIndex, this.options, this.answerChosen, this.questionsObj, this._answerShown);
+
+  String _parseHtmlString(String htmlString) {
+    var text = html.Element.span()..appendHtml(htmlString);
+    return text.innerText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class EachResult extends StatelessWidget {
 
     // Options Here
     for (String option in options) {
+      option = _parseHtmlString(option);
       if (option == correctAnswer) {
         a.add(Container(
           child: RaisedButton(

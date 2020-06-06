@@ -1,15 +1,21 @@
 import "package:flutter/material.dart";
+import 'package:universal_html/html.dart' as html;
 
 class Question extends StatelessWidget {
   final String questionText;
 
   Question(this.questionText);
 
+  String _parseHtmlString(String htmlString) {
+    var text = html.Element.span()..appendHtml(htmlString);
+    return text.innerText;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        questionText,
+        _parseHtmlString(questionText),
         style: TextStyle(
           fontSize: 23,
         ),
