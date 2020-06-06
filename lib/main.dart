@@ -6,6 +6,7 @@ import "./quiz.dart";
 import 'result.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'Form.dart';
 
 // * Main Function executing the program
 void main() {
@@ -30,6 +31,13 @@ class _MyAppState extends State<MyApp> {
     Map(),
     Map(),
   ];
+  QuestionsTrack _questionsSet = QuestionsTrack();
+  bool _started = false;
+  int _score = 0;
+  String answer;
+  bool _answered = false;
+  String _name;
+  List answersSelected = new List();
 
   Future<String> getData() async {
     var res = await http
@@ -39,7 +47,10 @@ class _MyAppState extends State<MyApp> {
       results = resBody["results"];
       for (int i = 0; i < 5; i++) {
         data[i]["QuestionText"] = results[i]["question"];
-        data[i]["Options"] = [...(results[i]["incorrect_answers"]), results[i]["correct_answer"]];
+        data[i]["Options"] = [
+          ...(results[i]["incorrect_answers"]),
+          results[i]["correct_answer"]
+        ];
         data[i]["Options"].shuffle();
         data[i]["CorrectOption"] = results[i]["correct_answer"];
       }
@@ -48,15 +59,18 @@ class _MyAppState extends State<MyApp> {
     return "Success";
   }
 
-  QuestionsTrack _questionsSet = QuestionsTrack();
-  // var questionsScraped = getData();
-  int _score = 0;
-  String answer;
-  bool _answered = false;
+  void _quizStarted(String name) {
+    print('Name- $name');
+    setState(() {
+      this._started = !_started;
+      this._name = name;
+    });
+  }
 
   void _questionAnswered(String answer) {
     setState(() {
       this.answer = answer;
+      this.answersSelected.add(answer);
     });
   }
 
@@ -79,6 +93,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (_started == false) {
+      return MaterialApp(
+          home: Scaffold(
+        appBar: AppBar(
+          title: Text('MY QUIZ APP'),
+        ),
+        body: UserInfo(_quizStarted),
+      ));
+    }
     if (_answered == true && answer != null) {
       _answered = false;
       return MaterialApp(
@@ -107,8 +130,12 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionsSet.currentIndex,
               )
             : Result(
-                (_score / _questionsSet.questions.length).round(), _resetQuiz),
-      )); 
+                this.answersSelected,
+                this._questionsSet.questions,
+                this._name,
+                (_score / _questionsSet.questions.length).round(),
+                _resetQuiz),
+      ));
     }
   }
 

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'Result_Uploader/upload.dart';
 
 class Result extends StatelessWidget {
+  final List answersSelected;
+  final List questions;
+  final String name;
   final int result;
   final Function resetQuiz;
 
-  Result(this.result, this.resetQuiz);
+  Result(this.answersSelected, this.questions, this.name, this.result, this.resetQuiz);
 
   String get resultText {
     String finalResult;
@@ -20,7 +23,7 @@ class Result extends StatelessWidget {
     } else {
       finalResult = "You are amazing";
     }
-    Uploader uploader = Uploader("NOT FOUND", result);
+    Uploader uploader = Uploader(answersSelected, questions, name, result);
     uploader.upload();
     return finalResult;
   }

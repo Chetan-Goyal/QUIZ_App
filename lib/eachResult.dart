@@ -68,17 +68,12 @@ class EachResult extends StatelessWidget {
 
     a.add(
           Container(
-            child: RaisedButton(
-              child: Text(
-                "Next",
-                style: TextStyle(
-                  fontSize: 23,
-                ),
-                
-              ),
-              color: Colors.blue,
-              textColor: Colors.white,
+            child: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
               onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+              tooltip: 'Submit',
+              child: Icon(Icons.send),
             ),
           ),
         );
