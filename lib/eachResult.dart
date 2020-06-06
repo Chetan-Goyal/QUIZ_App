@@ -66,6 +66,23 @@ class EachResult extends StatelessWidget {
       }
     }
 
+    a.add(
+          Container(
+            child: RaisedButton(
+              child: Text(
+                "Next",
+                style: TextStyle(
+                  fontSize: 23,
+                ),
+                
+              ),
+              color: Colors.blue,
+              textColor: Colors.white,
+              onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+            ),
+          ),
+        );
+
     return Column(children: a);
   }
 }
