@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       for (int i = 0; i < 5; i++) {
         data[i]["QuestionText"] = results[i]["question"];
         data[i]["Options"] = [...(results[i]["incorrect_answers"]), results[i]["correct_answer"]];
-        
+        data[i]["Options"].shuffle();
         data[i]["CorrectOption"] = results[i]["correct_answer"];
       }
       _questionsSet.questions = data;
