@@ -24,22 +24,22 @@ class EachResult extends StatelessWidget {
     ];
 
     // Options Here
-    for (Map option in options) {
-      if (option["OptionText"] == correctAnswer) {
+    for (String option in options) {
+      if (option == correctAnswer) {
         a.add(Container(
           child: RaisedButton(
-            child: Text(option["OptionText"]),
+            child: Text(option),
             color: Colors.green[700],
             textColor: Colors.white,
             onPressed: () => _answerShown(questionsObj.score(answerChosen)),
           ),
           width: 200,
         ));
-      } else if (option["OptionText"] == answerChosen &&
+      } else if (option == answerChosen &&
           answerChosen != correctAnswer) {
         a.add(Container(
           child: RaisedButton(
-            child: Text(option["OptionText"]),
+            child: Text(option),
             color: Colors.red[700],
             textColor: Colors.white,
             onPressed: () => _answerShown(questionsObj.score(answerChosen)),
@@ -50,7 +50,7 @@ class EachResult extends StatelessWidget {
         a.add(
           Container(
             child: RaisedButton(
-              child: Text(option["OptionText"]),
+              child: Text(option),
               onPressed: () => _answerShown(questionsObj.score(answerChosen)),
             ),
             width: 200,

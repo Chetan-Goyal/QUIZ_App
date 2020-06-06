@@ -21,9 +21,9 @@ class Quiz extends StatelessWidget {
         ),
 
         // Options Here
-        ...(this.questions[this.questionIndex]['Options'] as List<Map>)
+        ...(this.questions[this.questionIndex]['Options'])
             .map((option) {
-          return Answer(answerQuestion, option["OptionText"], option["Score"]);
+          return Answer(answerQuestion, option);
         }).toList()
       ],
     );
