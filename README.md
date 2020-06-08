@@ -1,16 +1,47 @@
-# QUIZ_App
+# QUIZ App
 
-A new Flutter project.
+Quiz App is a very lightweight [flutter](https://flutter.dev/) Project with a lots of features like loading questions from the web and sending the results to a spreadsheet file.
 
-## Getting Started
+## Requirements
 
-This project is a starting point for a Flutter application.
+To install the dependencies of this project, Execute the following command on terminal at the project directory-
 
-A few resources to get you started if this is your first Flutter project:
+```
+flutter pub get
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+This command will install the required dependies for the project.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Usage
+
+You can run the project in [Debugging Mode](https://flutter.dev/docs/testing/build-modes#debug) by using the following command-
+
+```
+flutter run
+```
+
+To build the apk, you can execute the following command-
+
+```
+flutter build apk --release
+```
+To know more about the build process, [click here](https://flutter.dev/docs/deployment/android).
+
+## Features
+
+Quiz App supports the following features-
+
+* Automatically Refreshing Questions.
+* Sending the Results to private Excel File via [App Script](https://developers.google.com/apps-script).
+* Displaying correct answer after each question.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+This project comes under the policy of MIT License. 
+[MIT](https://choosealicense.com/licenses/mit/)
