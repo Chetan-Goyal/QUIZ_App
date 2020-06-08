@@ -38,7 +38,7 @@ class EachResult extends StatelessWidget {
             child: Text(option),
             color: Colors.green[700],
             textColor: Colors.white,
-            onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+            onPressed: () {},
           ),
           width: 200,
         ));
@@ -49,7 +49,7 @@ class EachResult extends StatelessWidget {
             child: Text(option),
             color: Colors.red[700],
             textColor: Colors.white,
-            onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+            onPressed: () {},
           ),
           width: 200,
         ));
@@ -58,7 +58,7 @@ class EachResult extends StatelessWidget {
           Container(
             child: RaisedButton(
               child: Text(option),
-              onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+              onPressed: () {},
             ),
             width: 200,
           ),

@@ -7,6 +7,7 @@ import 'result.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'Form.dart';
+import 'Loader.dart';
 
 // * Main Function executing the program
 void main() {
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
   bool _answered = false;
   String _name;
   List answersSelected = new List();
+  bool _isDataLoaded = false;
 
   Future<String> getData() async {
     var res = await http
@@ -56,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       }
       _questionsSet.questions = data;
     });
-    return "Success";
+    this._isDataLoaded = true;
   }
 
   void _quizStarted(String name) {
@@ -88,6 +90,7 @@ class _MyAppState extends State<MyApp> {
       _questionsSet.currentIndex = 0;
       _answered = false;
       this.answer = null;
+      _isDataLoaded = false;
     });
   }
 
@@ -101,6 +104,17 @@ class _MyAppState extends State<MyApp> {
         ),
         body: UserInfo(_quizStarted),
       ));
+    } else if (this._isDataLoaded == false) {
+      return MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              title: Text('MY QUIZ APP'),
+            ),
+            body: Center(
+              child: FlipLoader(),
+            ),
+          ),
+      );
     }
     if (_answered == true && answer != null) {
       _answered = false;
