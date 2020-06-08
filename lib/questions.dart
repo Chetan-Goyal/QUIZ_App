@@ -35,10 +35,6 @@ class QuestionsTrack {
   ];
   QuestionsTrack() {
     this.currentIndex = 0;
-    // DataProcessor apiData = DataProcessor();
-    // sleep(Duration(seconds:5));
-    // this.questions = apiData.questions();
-    // print('Questions, ${apiData.finalData}');
   }
 
   void nextQuestion() {

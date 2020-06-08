@@ -66,7 +66,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _quizStarted(String name) {
-    print('Name- $name');
     setState(() {
       this._started = !_started;
       this._name = name;

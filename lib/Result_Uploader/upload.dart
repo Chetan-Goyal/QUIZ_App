@@ -1,4 +1,3 @@
-import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 String baseURL =
@@ -9,7 +8,6 @@ class Uploader {
   final List questions;
   final String _name;
   final int _score;
-  dynamic responseCode;
 
   Uploader(this.answersSelected, this.questions, this._name, this._score);
 
@@ -30,19 +28,9 @@ class Uploader {
 
   void upload() async {
     try {
-      await http.get(baseURL + toParams()).then((response) {
-        responseCode = convert.jsonDecode(response.body)['status'];
-      });
+      await http.get(baseURL + toParams());
     } catch (e) {
       print(e);
-      responseCode = 500;
-    }
-
-    print('response: $responseCode');
-    if (responseCode == 200) {
-      print('Uploaded');
-    } else {
-      print('CODE: $responseCode \nNot Uploaded');
     }
   }
 }
