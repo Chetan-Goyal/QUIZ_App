@@ -42,23 +42,27 @@ class _MyAppState extends State<MyApp> {
   bool _isDataLoaded = false;
 
   Future<String> getData() async {
-    var res = await http
+    try {
+      var res = await http
         .get(Uri.encodeFull(API_URL), headers: {"Accept": "application/json"});
-    setState(() {
-      var resBody = json.decode(res.body);
-      results = resBody["results"];
-      for (int i = 0; i < 5; i++) {
-        data[i]["QuestionText"] = results[i]["question"];
-        data[i]["Options"] = [
-          ...(results[i]["incorrect_answers"]),
-          results[i]["correct_answer"]
-        ];
-        data[i]["Options"].shuffle();
-        data[i]["CorrectOption"] = results[i]["correct_answer"];
-      }
-      _questionsSet.questions = data;
-    });
-    this._isDataLoaded = true;
+      setState(() {
+        var resBody = json.decode(res.body);
+        results = resBody["results"];
+        for (int i = 0; i < 5; i++) {
+          data[i]["QuestionText"] = results[i]["question"];
+          data[i]["Options"] = [
+            ...(results[i]["incorrect_answers"]),
+            results[i]["correct_answer"]
+          ];
+          data[i]["Options"].shuffle();
+          data[i]["CorrectOption"] = results[i]["correct_answer"];
+        }
+        _questionsSet.questions = data;
+        this._isDataLoaded = true;
+      });
+    } catch(e) {
+      getData();
+    }
   }
 
   void _quizStarted(String name) {
@@ -111,7 +115,7 @@ class _MyAppState extends State<MyApp> {
               title: Text('MY QUIZ APP'),
             ),
             body: Center(
-              child: FlipLoader(),
+              child: ColorLoader(colors: Colors.primaries, duration: Duration(seconds: 5)),
             ),
           ),
       );

@@ -1,102 +1,90 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'dart:async';
 
-class FlipLoader extends StatefulWidget {
-  FlipLoader();
+class ColorLoader extends StatefulWidget {
+  final List<Color> colors;
+  final Duration duration;
+
+  ColorLoader({this.colors, this.duration});
 
   @override
-  _FlipLoaderState createState() => _FlipLoaderState();
+  _ColorLoaderState createState() =>
+      _ColorLoaderState(this.colors, this.duration);
 }
 
-class _FlipLoaderState extends State<FlipLoader>
+class _ColorLoaderState extends State<ColorLoader>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> rotationHorizontal;
-  Animation<double> rotationVertical;
-  Color loaderColor = Colors.redAccent;
-  Widget loaderIconChild;
-  final Color iconColor = Colors.white;
-  final IconData icon = Icons.sync;
-  final String animationType = "full_flip";
-  final String shape = "square";
-  final bool rotateIcon = true;
+  final List<Color> colors;
+  final Duration duration;
+  Timer timer;
 
-  _FlipLoaderState();
+  _ColorLoaderState(this.colors, this.duration);
+
+  //noSuchMethod(Invocation i) => super.noSuchMethod(i);
+
+  List<ColorTween> tweenAnimations = [];
+  int tweenIndex = 0;
+
+  AnimationController controller;
+  List<Animation<Color>> colorAnimations = [];
 
   @override
   void initState() {
     super.initState();
 
-    controller = createAnimationController();
 
-    controller.addStatusListener((status) {
-      // Play animation backwards and forwards for full flip
-      if (status == AnimationStatus.dismissed) {
-        setState(() {
-          controller.forward();
-        });
-      }
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          controller.repeat();
-        });
-      }
+
+    controller = new AnimationController(
+      vsync: this,
+      duration: duration,
+    );
+
+    for (int i = 0; i < colors.length - 1; i++) {
+      tweenAnimations.add(ColorTween(begin: colors[i], end: colors[i + 1]));
+    }
+
+    tweenAnimations
+        .add(ColorTween(begin: colors[colors.length - 1], end: colors[0]));
+
+    for (int i = 0; i < colors.length; i++) {
+      Animation<Color> animation = tweenAnimations[i].animate(CurvedAnimation(
+          parent: controller,
+          curve: Interval((1 / colors.length) * (i + 1) - 0.05,
+              (1 / colors.length) * (i + 1),
+              curve: Curves.linear)));
+
+      colorAnimations.add(animation);
+    }
+
+    print(colorAnimations.length);
+
+    tweenIndex = 0;
+
+    timer = Timer.periodic(duration, (Timer t) {
+      setState(() {
+        tweenIndex = (tweenIndex + 1) % colors.length;
+      });
     });
 
     controller.forward();
   }
 
-  AnimationController createAnimationController() {
-    AnimationController animCtrl;
-
-    animCtrl = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
-
-    this.rotationHorizontal = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-            parent: animCtrl,
-            curve: Interval(0.0, 0.50, curve: Curves.linear)));
-    this.rotationVertical = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-            parent: animCtrl,
-            curve: Interval(0.50, 1.0, curve: Curves.linear)));
-
-    return animCtrl;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 5.0,
+          valueColor: colorAnimations[tweenIndex],
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return new AnimatedBuilder(
-      animation: controller,
-      builder: (BuildContext context, Widget child) {
-        return Container(
-          child: new Transform(
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.006)
-              ..rotateX((2 * pi * rotationVertical.value))
-              ..rotateY((2 * pi * rotationHorizontal.value)),
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: shape == "circle" ? BoxShape.circle : BoxShape.rectangle,
-                borderRadius: shape == "circle"
-                    ? null
-                    : new BorderRadius.all(const Radius.circular(8.0)),
-                color: loaderColor,
-              ),
-              width: 40.0,
-              height: 40.0,
-              child: new Center(
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: 20.0,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  void dispose() {
+    timer.cancel();
+    controller.dispose();
+    super.dispose();
   }
 }
