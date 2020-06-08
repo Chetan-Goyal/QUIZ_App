@@ -12,16 +12,18 @@ class Result extends StatelessWidget {
 
   String get resultText {
     String finalResult;
-    if (result < 65) {
-      finalResult = "You are very BAD in this. :P";
-    } else if (result < 75) {
-      finalResult = "You are BAD in this. :(";
-    } else if (result < 85) {
+    if (result < 20) {
+      finalResult = "You are very BAD in Quiz.   :P";
+    } else if (result < 40) {
+      finalResult = "You are BAD in Quiz.   :(";
+    } else if (result < 60) {
       finalResult = "Nice Attempt!!!";
-    } else if (result < 95) {
+    } else if (result < 80) {
       finalResult = "You are GOOD!!!";
-    } else {
+    } else if (result < 100) {
       finalResult = "You are AMAZING!!!";
+    }else {
+      finalResult = "WOW. You did it. Congratulations..   :D";
     }
     Uploader uploader = Uploader(answersSelected, questions, name, result);
     uploader.upload();
