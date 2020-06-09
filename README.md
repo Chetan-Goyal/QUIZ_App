@@ -56,5 +56,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-This project comes under the policy of MIT License. 
-[MIT](https://choosealicense.com/licenses/mit/)
+This project comes under the policy of [MIT License](https://choosealicense.com/licenses/mit/).
