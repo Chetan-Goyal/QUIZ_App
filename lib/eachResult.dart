@@ -31,11 +31,11 @@ class EachResult extends StatelessWidget {
 
     // Options Here
     for (String option in options) {
-      option = _parseHtmlString(option);
+      String decodedOption = _parseHtmlString(option);
       if (option == correctAnswer) {
         a.add(Container(
           child: RaisedButton(
-            child: Text(option),
+            child: Text(decodedOption),
             color: Colors.green[700],
             textColor: Colors.white,
             onPressed: () {},
@@ -46,7 +46,7 @@ class EachResult extends StatelessWidget {
           answerChosen != correctAnswer) {
         a.add(Container(
           child: RaisedButton(
-            child: Text(option),
+            child: Text(decodedOption),
             color: Colors.red[700],
             textColor: Colors.white,
             onPressed: () {},
@@ -57,7 +57,7 @@ class EachResult extends StatelessWidget {
         a.add(
           Container(
             child: RaisedButton(
-              child: Text(option),
+              child: Text(decodedOption),
               onPressed: () {},
             ),
             width: 200,
