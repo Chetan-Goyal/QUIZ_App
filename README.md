@@ -2,6 +2,18 @@
 
 Quiz App is a very lightweight [flutter](https://flutter.dev/) Project with a lots of features like loading questions from the web and sending the results to a spreadsheet file.
 
+## Installing the QUIZ App
+
+You can download the QUIZ App (.apk file) in your android device from the below link-
+
+[Google Drive Link](https://drive.google.com/drive/folders/1v4sVY88G8H0jgyKPo86MLJ7e_GB97OSE)
+
+Note that there are two apk files, one comparatively 2.5x times the size of other. 
+
+You can install the less size apk if you system architecture is arm64 (Most Widely Used).
+
+Otherwise, you can install the other big size apk which supports all the system architectures.
+
 ## Requirements
 
 To install the dependencies of this project, Execute the following command on terminal at the project directory-
