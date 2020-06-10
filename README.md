@@ -9,6 +9,8 @@ You can download the QUIZ App (.apk file) in your android device from the below 
 1. [Google Drive Link](https://drive.google.com/drive/folders/1v4sVY88G8H0jgyKPo86MLJ7e_GB97OSE)
 2. [MEGA DRIVE LINK](https://mega.nz/folder/xxsFxRjC#FEVlObmSiUfyZgJPOtZBtA)
 
+(Recent .apk file will be uploaded soon)
+
 Note that there are two apk files, one comparatively 2.5x times the size of other. 
 
 You can install the less size apk if you system architecture is arm64 (Most Widely Used).
