@@ -22,7 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final String API_URL =
+  final String apiURL =
       "https://opentdb.com/api.php?amount=5&category=18&type=multiple";
   List results;
   List data = [
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   Future<String> getData() async {
     try {
       var res = await http
-        .get(Uri.encodeFull(API_URL), headers: {"Accept": "application/json"});
+        .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
       setState(() {
         var resBody = json.decode(res.body);
         results = resBody["results"];
@@ -99,16 +99,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_started == false) {
+    if (!_started) {
       return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.purple),
           home: Scaffold(
         appBar: AppBar(
           title: Text('MY QUIZ APP'),
         ),
         body: UserInfo(_quizStarted),
       ));
-    } else if (this._isDataLoaded == false) {
+    } else if (!this._isDataLoaded) {
       return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.purple),
           home: Scaffold(
             appBar: AppBar(
               title: Text('MY QUIZ APP'),
@@ -119,9 +121,10 @@ class _MyAppState extends State<MyApp> {
           ),
       );
     }
-    if (_answered == true && answer != null) {
+    if (_answered && answer != null) {
       _answered = false;
       return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.purple),
           home: Scaffold(
         appBar: AppBar(
           title: Text('MY QUIZ APP'),
@@ -136,6 +139,7 @@ class _MyAppState extends State<MyApp> {
     } else {
       _answered = true;
       return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.purple),
           home: Scaffold(
         appBar: AppBar(
           title: Text('MY QUIZ APP'),
