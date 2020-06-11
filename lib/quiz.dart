@@ -19,7 +19,7 @@ class Quiz extends StatelessWidget {
         Question(
           this.questions[this.questionIndex]["QuestionText"],
         ),
-
+        SizedBox(height: 30),
         // Options Here
         ...(this.questions[this.questionIndex]['Options'])
             .map((option) {

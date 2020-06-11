@@ -12,12 +12,15 @@ class UserInfo extends StatelessWidget {
     return Center(
         child: Column(
       children: <Widget>[
+        SizedBox(height: 50),
         Text(
           'Enter your Name',
           style: TextStyle(
             fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
+
         TextField(
           decoration: InputDecoration(hintText: 'Name'),
           onChanged: (String text) {
@@ -27,9 +30,11 @@ class UserInfo extends StatelessWidget {
             value = text;
           },
         ),
+        SizedBox(height: 30),
         RaisedButton(
             onPressed: () => _submitButton(value), child: Text("Submit")),
       ],
+      
     ));
   }
 }

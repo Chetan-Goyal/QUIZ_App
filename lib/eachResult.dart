@@ -28,7 +28,7 @@ class EachResult extends StatelessWidget {
         questionsObj.questions[questionIndex]["QuestionText"],
       ),
     ];
-
+    a.add(SizedBox(height: 30));
     // Options Here
     for (String option in options) {
       String decodedOption = _parseHtmlString(option);

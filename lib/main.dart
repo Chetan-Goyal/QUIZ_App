@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   Future<String> getData() async {
     try {
       var res = await http
-        .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
+          .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
       setState(() {
         var resBody = json.decode(res.body);
         results = resBody["results"];
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         _questionsSet.questions = data;
         this._isDataLoaded = true;
       });
-    } catch(e) {
+    } catch (e) {
       getData();
     }
   }
@@ -101,62 +101,84 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (!_started) {
       return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple),
-          home: Scaffold(
-        appBar: AppBar(
-          title: Text('MY QUIZ APP'),
-        ),
-        body: UserInfo(_quizStarted),
-      ));
-    } else if (!this._isDataLoaded) {
-      return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple),
+          theme: ThemeData(
+              fontFamily: 'Ubuntu',
+              primarySwatch: Colors.purple,
+              appBarTheme: AppBarTheme(
+                textTheme: ThemeData.dark()
+                  .textTheme
+                  .copyWith(headline6: TextStyle(fontFamily: 'MetalMania'))),
+              ), 
+                
           home: Scaffold(
             appBar: AppBar(
-              title: Text('MY QUIZ APP'),
+              title: Text('QUIZ APP'),
+              ),
+          body: UserInfo(_quizStarted),
             ),
-            body: Center(
-              child: ColorLoader(colors: Colors.primaries, duration: Duration(seconds: 5)),
+          );
+    } else if (!this._isDataLoaded) {
+      return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.purple,
+              fontFamily: 'Ubuntu',),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'QUIZ APP',
+              style: TextStyle(fontFamily: 'MetalMania'),
             ),
           ),
+          body: Center(
+            child: ColorLoader(
+                colors: Colors.primaries, duration: Duration(seconds: 5)),
+          ),
+        ),
       );
     }
     if (_answered && answer != null) {
       _answered = false;
       return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple),
+          theme: ThemeData(primarySwatch: Colors.purple,
+              fontFamily: 'Ubuntu',),
           home: Scaffold(
-        appBar: AppBar(
-          title: Text('MY QUIZ APP'),
-        ),
-        body: EachResult(
-            _questionsSet.currentIndex,
-            _questionsSet.availableOptions(),
-            answer,
-            _questionsSet,
-            _nextQuestion),
-      ));
+            appBar: AppBar(
+              title: Text(
+                'QUIZ APP',
+                style: TextStyle(fontFamily: 'MetalMania'),
+              ),
+            ),
+            body: EachResult(
+                _questionsSet.currentIndex,
+                _questionsSet.availableOptions(),
+                answer,
+                _questionsSet,
+                _nextQuestion),
+          ));
     } else {
       _answered = true;
       return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple),
+          theme: ThemeData(primarySwatch: Colors.purple,
+              fontFamily: 'Ubuntu',),
           home: Scaffold(
-        appBar: AppBar(
-          title: Text('MY QUIZ APP'),
-        ),
-        body: _questionsSet.currentIndex < _questionsSet.questions.length
-            ? Quiz(
-                questions: _questionsSet.questions,
-                answerQuestion: _questionAnswered,
-                questionIndex: _questionsSet.currentIndex,
-              )
-            : Result(
-                this.answersSelected,
-                this._questionsSet.questions,
-                this._name,
-                (_score / _questionsSet.questions.length).round(),
-                _resetQuiz),
-      ));
+            appBar: AppBar(
+              title: Text(
+                'QUIZ APP',
+                style: TextStyle(fontFamily: 'MetalMania'),
+              ),
+            ),
+            body: _questionsSet.currentIndex < _questionsSet.questions.length
+                ? Quiz(
+                    questions: _questionsSet.questions,
+                    answerQuestion: _questionAnswered,
+                    questionIndex: _questionsSet.currentIndex,
+                  )
+                : Result(
+                    this.answersSelected,
+                    this._questionsSet.questions,
+                    this._name,
+                    (_score / _questionsSet.questions.length).round(),
+                    _resetQuiz),
+          ));
     }
   }
 

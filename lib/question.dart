@@ -18,6 +18,7 @@ class Question extends StatelessWidget {
         _parseHtmlString(questionText),
         style: TextStyle(
           fontSize: 23,
+          fontWeight: FontWeight.bold,
         ),
         textAlign: TextAlign.center,
       ),
