@@ -43,12 +43,10 @@ class _MyAppState extends State<MyApp> {
   var _brightness;
   int _retryCount = 0;
   bool _noInternet = false;
+  var _body;
 
   void getData() async {
-    if (_started) {
-      _retryCount += 1;
-    }
-    if (_retryCount > 40) {
+    if (_retryCount > 200) {
       setState(() {
         _noInternet = true;
       });
@@ -70,8 +68,12 @@ class _MyAppState extends State<MyApp> {
         }
         _questionsSet.questions = data;
         this._isDataLoaded = true;
+        _retryCount = 0;
       });
     } catch (e) {
+      if (_started) {
+        _retryCount += 1;
+      }
       getData();
     }
   }
@@ -127,169 +129,65 @@ class _MyAppState extends State<MyApp> {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
     }
 
-    if (_noInternet && _started) {
-      return MaterialApp(
-        theme: ThemeData(
-          brightness: _brightness,
-          fontFamily: 'Ubuntu',
-          primarySwatch: Colors.purple,
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'QUIZ APP',
-                    style: TextStyle(fontFamily: 'MetalMania'),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.invert_colors),
-                  onPressed: _themeChanged,
-                ),
-              ],
-            ),
-          ),
-          body: Center(child: Text("No Internet Connection Found")),
-        ),
-      );
-    }
-
     if (!_started) {
-      return MaterialApp(
-        theme: ThemeData(
-          brightness: _brightness,
-          fontFamily: 'Ubuntu',
-          primarySwatch: Colors.purple,
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'QUIZ APP',
-                    style: TextStyle(fontFamily: 'MetalMania'),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.invert_colors),
-                  onPressed: _themeChanged,
-                ),
-              ],
-            ),
-          ),
-          body: UserInfo(_quizStarted),
-        ),
-      );
+      _body = UserInfo(_quizStarted);
+    } else if (_noInternet && _started) {
+      _body = Center(child: Text("No Internet Connection Found"));
     } else if (!this._isDataLoaded) {
-      return MaterialApp(
-        theme: ThemeData(
-          brightness: _brightness,
-          primarySwatch: Colors.purple,
-          fontFamily: 'Ubuntu',
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'QUIZ APP',
-                    style: TextStyle(fontFamily: 'MetalMania'),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.invert_colors),
-                  onPressed: _themeChanged,
-                ),
-              ],
-            ),
-          ),
-          body: Center(
-            child: ColorLoader(
-                colors: Colors.primaries, duration: Duration(seconds: 5)),
-          ),
-        ),
+      _body = Center(
+        child: ColorLoader(
+            colors: Colors.primaries, duration: Duration(seconds: 5)),
       );
-    }
-    if (_answered && answer != null) {
+    } else if (_answered && answer != null) {
       _answered = false;
-      return MaterialApp(
-          theme: ThemeData(
-            brightness: _brightness,
-            primarySwatch: Colors.purple,
-            fontFamily: 'Ubuntu',
-          ),
-          home: Scaffold(
-            appBar: AppBar(
-              title: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      'QUIZ APP',
-                      style: TextStyle(fontFamily: 'MetalMania'),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.invert_colors),
-                    onPressed: () {
-                      _themeChanged(question: true);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            body: EachResult(
-                _questionsSet.currentIndex,
-                _questionsSet.availableOptions(),
-                answer,
-                _questionsSet,
-                _nextQuestion),
-          ));
+      _body = EachResult(
+          _questionsSet.currentIndex,
+          _questionsSet.availableOptions(),
+          answer,
+          _questionsSet,
+          _nextQuestion);
     } else {
       _answered = true;
-      return MaterialApp(
-          theme: ThemeData(
-            brightness: _brightness,
-            primarySwatch: Colors.purple,
-            fontFamily: 'Ubuntu',
-          ),
-          home: Scaffold(
-            appBar: AppBar(
-              title: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      'QUIZ APP',
-                      style: TextStyle(fontFamily: 'MetalMania'),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.invert_colors),
-                    tooltip: 'Change Theme',
-                    onPressed: () {
-                      _themeChanged(question: true);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            body: _questionsSet.currentIndex < _questionsSet.questions.length
-                ? Quiz(
-                    questions: _questionsSet.questions,
-                    answerQuestion: _questionAnswered,
-                    questionIndex: _questionsSet.currentIndex,
-                  )
-                : Result(
-                    this.answersSelected,
-                    this._questionsSet.questions,
-                    this._name,
-                    (_score / _questionsSet.questions.length).round(),
-                    _resetQuiz),
-          ));
+      _body = _questionsSet.currentIndex < _questionsSet.questions.length
+          ? Quiz(
+              questions: _questionsSet.questions,
+              answerQuestion: _questionAnswered,
+              questionIndex: _questionsSet.currentIndex,
+            )
+          : Result(
+              this.answersSelected,
+              this._questionsSet.questions,
+              this._name,
+              (_score / _questionsSet.questions.length).round(),
+              _resetQuiz);
     }
+
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: _brightness,
+        fontFamily: 'Ubuntu',
+        primarySwatch: Colors.purple,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  'QUIZ APP',
+                  style: TextStyle(fontFamily: 'MetalMania'),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.invert_colors),
+                onPressed: _themeChanged,
+              ),
+            ],
+          ),
+        ),
+        body: _body,
+      ),
+    );
   }
 
   @override
