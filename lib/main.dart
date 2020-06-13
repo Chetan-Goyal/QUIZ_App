@@ -41,8 +41,18 @@ class _MyAppState extends State<MyApp> {
   List answersSelected = new List();
   bool _isDataLoaded = false;
   var _brightness;
+  int _retryCount = 0;
+  bool _noInternet = false;
 
-  Future<String> getData() async {
+  void getData() async {
+    if (_started) {
+      _retryCount += 1;
+    }
+    if (_retryCount > 40) {
+      setState(() {
+        _noInternet = true;
+      });
+    }
     try {
       var res = await http
           .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
@@ -116,6 +126,36 @@ class _MyAppState extends State<MyApp> {
     if (_brightness == null) {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
     }
+
+    if (_noInternet && _started) {
+      return MaterialApp(
+        theme: ThemeData(
+          brightness: _brightness,
+          fontFamily: 'Ubuntu',
+          primarySwatch: Colors.purple,
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'QUIZ APP',
+                    style: TextStyle(fontFamily: 'MetalMania'),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.invert_colors),
+                  onPressed: _themeChanged,
+                ),
+              ],
+            ),
+          ),
+          body: Center(child: Text("No Internet Connection Found")),
+        ),
+      );
+    }
+
     if (!_started) {
       return MaterialApp(
         theme: ThemeData(
@@ -136,7 +176,6 @@ class _MyAppState extends State<MyApp> {
                 IconButton(
                   icon: Icon(Icons.invert_colors),
                   onPressed: _themeChanged,
-                  // padding: EdgeInsets.only(left: 70),
                 ),
               ],
             ),
@@ -164,7 +203,6 @@ class _MyAppState extends State<MyApp> {
                 IconButton(
                   icon: Icon(Icons.invert_colors),
                   onPressed: _themeChanged,
-                  // padding: EdgeInsets.only(left: 70),
                 ),
               ],
             ),
@@ -199,7 +237,6 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       _themeChanged(question: true);
                     },
-                    // padding: EdgeInsets.only(left: 70),
                   ),
                 ],
               ),
@@ -235,7 +272,6 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       _themeChanged(question: true);
                     },
-                    // padding: EdgeInsets.only(left: 70),
                   ),
                 ],
               ),
