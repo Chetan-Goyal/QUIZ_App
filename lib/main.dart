@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
   String _name;
   List answersSelected = new List();
   bool _isDataLoaded = false;
+  bool _darkMode = false;
 
   Future<String> getData() async {
     try {
@@ -97,35 +98,61 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _themeChanged({bool question: false}) {
+    setState(() {
+      this._darkMode = !this._darkMode;
+      if (question) {
+        this._answered = !_answered;
+      }
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     if (!_started) {
       return MaterialApp(
-          theme: ThemeData(
-              fontFamily: 'Ubuntu',
-              primarySwatch: Colors.purple,
-              appBarTheme: AppBarTheme(
-                textTheme: ThemeData.dark()
+        theme: ThemeData(
+          fontFamily: 'Ubuntu',
+          primarySwatch: Colors.purple,
+          appBarTheme: AppBarTheme(textTheme: ThemeData.dark()
                   .textTheme
                   .copyWith(headline6: TextStyle(fontFamily: 'MetalMania'))),
-              ), 
-                
-          home: Scaffold(
-            appBar: AppBar(
-              title: Text('QUIZ APP'),
-              ),
-          body: UserInfo(_quizStarted),
-            ),
-          );
-    } else if (!this._isDataLoaded) {
-      return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.purple,
-              fontFamily: 'Ubuntu',),
+        ),
         home: Scaffold(
           appBar: AppBar(
             title: Text(
-              'QUIZ APP',
-              style: TextStyle(fontFamily: 'MetalMania'),
+                    'QUIZ APP',
+                    style: TextStyle(fontFamily: 'MetalMania'),
+                  ),
+            ),
+          
+          body: UserInfo(_quizStarted),
+        ),
+      );
+    } else if (!this._isDataLoaded) {
+      return MaterialApp(
+        theme: ThemeData(
+          brightness: _darkMode ? Brightness.dark : Brightness.light,
+          primarySwatch: Colors.purple,
+          fontFamily: 'Ubuntu',
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'QUIZ APP',
+                    style: TextStyle(fontFamily: 'MetalMania'),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.invert_colors),
+                  onPressed: _themeChanged,
+                  // padding: EdgeInsets.only(left: 70),
+                ),
+              ],
             ),
           ),
           body: Center(
@@ -138,13 +165,29 @@ class _MyAppState extends State<MyApp> {
     if (_answered && answer != null) {
       _answered = false;
       return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.purple,
-              fontFamily: 'Ubuntu',),
+          theme: ThemeData(
+            brightness: _darkMode ? Brightness.dark : Brightness.light,
+            primarySwatch: Colors.purple,
+            fontFamily: 'Ubuntu',
+          ),
           home: Scaffold(
             appBar: AppBar(
-              title: Text(
-                'QUIZ APP',
-                style: TextStyle(fontFamily: 'MetalMania'),
+              title: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'QUIZ APP',
+                      style: TextStyle(fontFamily: 'MetalMania'),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.invert_colors),
+                    onPressed: () {
+                      _themeChanged(question: true);
+                    },
+                    // padding: EdgeInsets.only(left: 70),
+                  ),
+                ],
               ),
             ),
             body: EachResult(
@@ -157,13 +200,30 @@ class _MyAppState extends State<MyApp> {
     } else {
       _answered = true;
       return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.purple,
-              fontFamily: 'Ubuntu',),
+          theme: ThemeData(
+            brightness: _darkMode ? Brightness.dark : Brightness.light,
+            primarySwatch: Colors.purple,
+            fontFamily: 'Ubuntu',
+          ),
           home: Scaffold(
             appBar: AppBar(
-              title: Text(
-                'QUIZ APP',
-                style: TextStyle(fontFamily: 'MetalMania'),
+              title: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'QUIZ APP',
+                      style: TextStyle(fontFamily: 'MetalMania'),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.invert_colors),
+                    tooltip: 'Change Theme',
+                    onPressed: () {
+                      _themeChanged(question: true);
+                    },
+                    // padding: EdgeInsets.only(left: 70),
+                  ),
+                ],
               ),
             ),
             body: _questionsSet.currentIndex < _questionsSet.questions.length
