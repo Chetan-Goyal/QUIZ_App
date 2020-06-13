@@ -100,13 +100,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _resetQuiz() {
+    _isDataLoaded = false;
+    _noInternet = false;
+    _retryCount = 0;
     setState(() {
       getData();
       _score = 0;
       _questionsSet.currentIndex = 0;
       _answered = false;
       this.answer = null;
-      _isDataLoaded = false;
     });
   }
 
@@ -131,12 +133,34 @@ class _MyAppState extends State<MyApp> {
 
     if (!_started) {
       _body = UserInfo(_quizStarted);
-    } else if (_noInternet && _started) {
-      _body = Center(child: Text("No Internet Connection Found"));
-    } else if (!this._isDataLoaded) {
+    } else if (!this._isDataLoaded && !_noInternet) {
       _body = Center(
         child: ColorLoader(
             colors: Colors.primaries, duration: Duration(seconds: 5)),
+      );
+    } else if (_noInternet) {
+      _body = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "No Internet Connection Found",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            FlatButton(
+              onPressed: _resetQuiz,
+              color: Colors.blue,
+              child: Text("Try Again"),
+            ),
+          ],
+        ),
       );
     } else if (_answered && answer != null) {
       _answered = false;
