@@ -106,27 +106,34 @@ class _MyAppState extends State<MyApp> {
       }
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
     if (!_started) {
       return MaterialApp(
         theme: ThemeData(
+          brightness: _darkMode ? Brightness.dark : Brightness.light,
           fontFamily: 'Ubuntu',
           primarySwatch: Colors.purple,
-          appBarTheme: AppBarTheme(textTheme: ThemeData.dark()
-                  .textTheme
-                  .copyWith(headline6: TextStyle(fontFamily: 'MetalMania'))),
         ),
         home: Scaffold(
           appBar: AppBar(
-            title: Text(
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
                     'QUIZ APP',
                     style: TextStyle(fontFamily: 'MetalMania'),
                   ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.invert_colors),
+                  onPressed: _themeChanged,
+                  // padding: EdgeInsets.only(left: 70),
+                ),
+              ],
             ),
-          
+          ),
           body: UserInfo(_quizStarted),
         ),
       );
