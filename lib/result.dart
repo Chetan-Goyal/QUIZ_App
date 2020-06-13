@@ -40,7 +40,6 @@ class Result extends StatelessWidget {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColorDark,
             ),
             textAlign: TextAlign.center,
           ),
