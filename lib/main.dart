@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   String _name;
   List answersSelected = new List();
   bool _isDataLoaded = false;
-  bool _darkMode = false;
+  var _brightness;
 
   Future<String> getData() async {
     try {
@@ -100,7 +100,11 @@ class _MyAppState extends State<MyApp> {
 
   void _themeChanged({bool question: false}) {
     setState(() {
-      this._darkMode = !this._darkMode;
+      if (_brightness == Brightness.dark) {
+        _brightness = Brightness.light;
+      } else {
+        _brightness = Brightness.dark;
+      }
       if (question) {
         this._answered = !_answered;
       }
@@ -109,10 +113,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (_brightness == null) {
+      _brightness = WidgetsBinding.instance.window.platformBrightness;
+    }
     if (!_started) {
       return MaterialApp(
         theme: ThemeData(
-          brightness: _darkMode ? Brightness.dark : Brightness.light,
+          brightness: _brightness,
           fontFamily: 'Ubuntu',
           primarySwatch: Colors.purple,
         ),
@@ -140,7 +147,7 @@ class _MyAppState extends State<MyApp> {
     } else if (!this._isDataLoaded) {
       return MaterialApp(
         theme: ThemeData(
-          brightness: _darkMode ? Brightness.dark : Brightness.light,
+          brightness: _brightness,
           primarySwatch: Colors.purple,
           fontFamily: 'Ubuntu',
         ),
@@ -173,7 +180,7 @@ class _MyAppState extends State<MyApp> {
       _answered = false;
       return MaterialApp(
           theme: ThemeData(
-            brightness: _darkMode ? Brightness.dark : Brightness.light,
+            brightness: _brightness,
             primarySwatch: Colors.purple,
             fontFamily: 'Ubuntu',
           ),
@@ -208,7 +215,7 @@ class _MyAppState extends State<MyApp> {
       _answered = true;
       return MaterialApp(
           theme: ThemeData(
-            brightness: _darkMode ? Brightness.dark : Brightness.light,
+            brightness: _brightness,
             primarySwatch: Colors.purple,
             fontFamily: 'Ubuntu',
           ),
