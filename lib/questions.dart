@@ -1,38 +1,7 @@
 class QuestionsTrack {
   var currentIndex;
 
-  List questions = [
-    {
-      "QuestionText": '''What"s your favourite Colour?''',
-      "Options": [
-        "Blue",
-        "Red",
-        "Green",
-        "Black",
-      ],
-      "CorrectOption": "Blue"
-    },
-    {
-      "QuestionText": '''What"s your favourite language?''',
-      "Options": [
-        "C++",
-        "Java",
-        "Python",
-        "Dart",
-      ],
-      "CorrectOption": "Python"
-    },
-    {
-      "QuestionText": '''What"s your favourite Working Environment?''',
-      "Options": [
-        "Mac OS",
-        "Linux",
-        "Windows",
-        "Chrome OS",
-      ],
-      "CorrectOption": "Linux"
-    },
-  ];
+  List questions;
   QuestionsTrack() {
     this.currentIndex = 0;
   }
