@@ -1,7 +1,7 @@
 import 'package:QUIZ_App/eachResult.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import './questions.dart';
-import 'dart:async';
 import "./quiz.dart";
 import 'result.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +11,11 @@ import 'Loader.dart';
 
 // * Main Function executing the program
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MyApp());
 }
 
@@ -147,9 +152,7 @@ class _MyAppState extends State<MyApp> {
             Text(
               "No Internet Connection Found",
               style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold),
+                  fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 40,

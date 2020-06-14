@@ -10,8 +10,8 @@ class EachResult extends StatelessWidget {
   final questionsObj;
   final Function _answerShown;
 
-  EachResult(
-      this.questionIndex, this.options, this.answerChosen, this.questionsObj, this._answerShown);
+  EachResult(this.questionIndex, this.options, this.answerChosen,
+      this.questionsObj, this._answerShown);
 
   String _parseHtmlString(String htmlString) {
     var text = html.Element.span()..appendHtml(htmlString);
@@ -20,7 +20,6 @@ class EachResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Question Here
     String correctAnswer = questionsObj.correctOption();
     List<Widget> a = [
@@ -39,18 +38,21 @@ class EachResult extends StatelessWidget {
             color: Colors.green[700],
             textColor: Colors.white,
             onPressed: () {},
+            padding: EdgeInsets.all(5),
           ),
+          margin: EdgeInsets.only(top: 5, bottom: 5),
           width: 200,
         ));
-      } else if (option == answerChosen &&
-          answerChosen != correctAnswer) {
+      } else if (option == answerChosen && answerChosen != correctAnswer) {
         a.add(Container(
           child: RaisedButton(
             child: Text(decodedOption),
             color: Colors.red[700],
             textColor: Colors.white,
             onPressed: () {},
+            padding: EdgeInsets.all(5),
           ),
+          margin: EdgeInsets.only(top: 5, bottom: 5),
           width: 200,
         ));
       } else {
@@ -59,7 +61,9 @@ class EachResult extends StatelessWidget {
             child: RaisedButton(
               child: Text(decodedOption),
               onPressed: () {},
+              padding: EdgeInsets.all(5),
             ),
+            margin: EdgeInsets.only(top: 5, bottom: 5),
             width: 200,
           ),
         );
@@ -67,16 +71,16 @@ class EachResult extends StatelessWidget {
     }
 
     a.add(
-          Container(
-            child: FloatingActionButton(
-        // When the user presses the button, show an alert dialog containing
-        // the text that the user has entered into the text field.
-              onPressed: () => _answerShown(questionsObj.score(answerChosen)),
-              tooltip: 'Submit',
-              child: Icon(Icons.send),
-            ),
-          ),
-        );
+      Container(
+        child: FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          onPressed: () => _answerShown(questionsObj.score(answerChosen)),
+          tooltip: 'Submit',
+          child: Icon(Icons.send),
+        ),
+      ),
+    );
 
     return Column(children: a);
   }

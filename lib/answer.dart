@@ -16,9 +16,11 @@ class Answer extends StatelessWidget {
   Widget build(BuildContext context) {
     var container = Container(
       child: RaisedButton(
-        child: Text(_parseHtmlString(answer)),
+        child: Text(_parseHtmlString(answer), textAlign: TextAlign.center,),
         onPressed: () => selectHandler(answer),
+        padding: EdgeInsets.all(5),
       ),
+      margin: EdgeInsets.only(top: 5, bottom: 5),
       width: 200,
     );
     return container;
