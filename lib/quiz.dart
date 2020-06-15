@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
-import 'answer.dart';
+import 'each_question.dart';
+import 'each_answer.dart';
 
 class Quiz extends StatelessWidget {
   final List questions;
