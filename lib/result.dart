@@ -25,6 +25,8 @@ class Result extends StatelessWidget {
     }else {
       finalResult = "WOW. You did it. Congratulations..   :D";
     }
+
+    // Uploading the final result to Google spreadsheet
     Uploader uploader = Uploader(answersSelected, questions, name, result);
     uploader.upload();
     return finalResult;
@@ -34,6 +36,8 @@ class Result extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        
+        // displaying the comments as per the user's attempt
         Center(
           child: Text(
             resultText,
@@ -44,6 +48,8 @@ class Result extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
+        
+        // Displaying Score
         Center(
           child: Text(
             "\n\nScore: $result\n\n",
@@ -55,6 +61,8 @@ class Result extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
+
+        // for resetting the quiz ( main.dart -> _resetQuiz() )
         FlatButton(
           onPressed: resetQuiz,
           child: Text("Restart Quiz!!"),

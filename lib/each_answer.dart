@@ -8,12 +8,15 @@ class Answer extends StatelessWidget {
   Answer(this.selectHandler, this.answer);
 
   String _parseHtmlString(String htmlString) {
+    // returning the urldecoded string of htmlString
+    // Here, it is used for options
     var text = html.Element.span()..appendHtml(htmlString);
     return text.innerText;
   }
 
   @override
   Widget build(BuildContext context) {
+    // returning the answer widget
     var container = Container(
       child: RaisedButton(
         child: Text(_parseHtmlString(answer), textAlign: TextAlign.center,),

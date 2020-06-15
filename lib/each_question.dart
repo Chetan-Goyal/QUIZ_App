@@ -13,6 +13,7 @@ class Question extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Widget for displaying Question
     return Container(
       child: Text(
         _parseHtmlString(questionText),

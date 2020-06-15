@@ -14,13 +14,14 @@ class EachResult extends StatelessWidget {
       this.questionsObj, this._answerShown);
 
   String _parseHtmlString(String htmlString) {
+    // returns urldecoded string
     var text = html.Element.span()..appendHtml(htmlString);
     return text.innerText;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Question Here
+
     String correctAnswer = questionsObj.correctOption();
     List<Widget> a = [
       Question(
@@ -32,6 +33,7 @@ class EachResult extends StatelessWidget {
     for (String option in options) {
       String decodedOption = _parseHtmlString(option);
       if (option == correctAnswer) {
+        // if current option is correct option
         a.add(Container(
           child: RaisedButton(
             child: Text(decodedOption),
@@ -44,6 +46,7 @@ class EachResult extends StatelessWidget {
           width: 200,
         ));
       } else if (option == answerChosen && answerChosen != correctAnswer) {
+        // if current option is chosen option and is incorrect
         a.add(Container(
           child: RaisedButton(
             child: Text(decodedOption),
@@ -56,6 +59,7 @@ class EachResult extends StatelessWidget {
           width: 200,
         ));
       } else {
+        // if current option is neither correct option nor chosen option
         a.add(
           Container(
             child: RaisedButton(
@@ -70,11 +74,10 @@ class EachResult extends StatelessWidget {
       }
     }
 
+    // Submit button
     a.add(
       Container(
         child: FloatingActionButton(
-          // When the user presses the button, show an alert dialog containing
-          // the text that the user has entered into the text field.
           onPressed: () => _answerShown(questionsObj.score(answerChosen)),
           tooltip: 'Submit',
           child: Icon(Icons.send),
@@ -82,6 +85,7 @@ class EachResult extends StatelessWidget {
       ),
     );
 
+    // returning the final widget tree
     return Column(children: a);
   }
 }

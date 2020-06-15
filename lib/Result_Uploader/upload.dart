@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 
+// Google Sheet url -> For posting data
 String baseURL =
     'https://script.google.com/macros/s/AKfycbxnQDz6VQue7XfeeMmsXshBxxm0ZmsFqsHiTvX2ilUuCWScrY0/exec';
 
@@ -12,6 +13,7 @@ class Uploader {
   Uploader(this.answersSelected, this.questions, this._name, this._score);
 
   String toParams() {
+    // returns the params for the request
     String params = "";
 
     params = params + "?name=$_name";
@@ -27,6 +29,7 @@ class Uploader {
   }
 
   void upload() async {
+    // calls the api to save the data in Google Sheet
     try {
       await http.get(baseURL + toParams());
     } catch (e) {

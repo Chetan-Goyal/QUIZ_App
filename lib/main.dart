@@ -1,17 +1,21 @@
-import 'package:QUIZ_App/each_result.dart';
-import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
-import './questions.dart';
-import "./quiz.dart";
-import 'result.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'Form.dart';
-import 'Loader.dart';
+
+import 'package:QUIZ_App/each_result.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
+import './questions.dart';
+import './quiz.dart';
+import './result.dart';
+import './Form.dart';
+import './Loader.dart';
 
 // * Main Function executing the program
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // To make app always in portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -27,6 +31,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  // Quiz Data Library
   final String apiURL =
       "https://opentdb.com/api.php?amount=5&category=18&type=multiple";
   List results;
@@ -51,6 +57,9 @@ class _MyAppState extends State<MyApp> {
   var _body;
 
   void getData() async {
+    // To get the data from the API with recursive approach for failed attempts
+    
+    // Retry Max Limit = 200
     if (_retryCount > 200) {
       setState(() {
         _noInternet = true;
@@ -60,6 +69,8 @@ class _MyAppState extends State<MyApp> {
       var res = await http
           .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
       setState(() {
+
+        // setting the quiz data in correct format from received data
         var resBody = json.decode(res.body);
         results = resBody["results"];
         for (int i = 0; i < 5; i++) {
@@ -77,6 +88,7 @@ class _MyAppState extends State<MyApp> {
       });
     } catch (e) {
       if (_started) {
+        // When data is not loaded in 'Quiz Question Loading Screen' 
         _retryCount += 1;
       }
       getData();
@@ -132,18 +144,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    // When Quiz App is just opened
     if (_brightness == null) {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
     }
 
+    // first page when app is started
     if (!_started) {
       _body = UserInfo(_quizStarted);
     } else if (!this._isDataLoaded && !_noInternet) {
+      // When Question is being loaded
       _body = Center(
         child: ColorLoader(
             colors: Colors.primaries, duration: Duration(seconds: 5)),
       );
     } else if (_noInternet) {
+      // When retry limit is reached
       _body = Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,6 +183,7 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     } else if (_answered && answer != null) {
+      // when question is answered by the user
       _answered = false;
       _body = EachResult(
           _questionsSet.currentIndex,
@@ -174,6 +192,8 @@ class _MyAppState extends State<MyApp> {
           _questionsSet,
           _nextQuestion);
     } else {
+      // displaying next question to the user and final Result when there 
+      // are no more questions 
       _answered = true;
       _body = _questionsSet.currentIndex < _questionsSet.questions.length
           ? Quiz(
@@ -205,6 +225,7 @@ class _MyAppState extends State<MyApp> {
                   style: TextStyle(fontFamily: 'MetalMania'),
                 ),
               ),
+              // For changing brightness (Light and Dark Mode)
               IconButton(
                 icon: Icon(Icons.invert_colors),
                 onPressed: _themeChanged,
@@ -220,6 +241,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    // getting data just after starting the quiz app
     this.getData();
   }
 }

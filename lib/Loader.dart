@@ -20,8 +20,6 @@ class _ColorLoaderState extends State<ColorLoader>
 
   _ColorLoaderState(this.colors, this.duration);
 
-  //noSuchMethod(Invocation i) => super.noSuchMethod(i);
-
   List<ColorTween> tweenAnimations = [];
   int tweenIndex = 0;
 
