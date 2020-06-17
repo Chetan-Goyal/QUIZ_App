@@ -45,6 +45,7 @@ class _UserInfoState extends State<UserInfo> {
           decoration: InputDecoration(hintText: 'Name'),
           onChanged: (String text) {
             value = text;
+            name = text;
           },
           onSubmitted: (String text) {
             value = text;
