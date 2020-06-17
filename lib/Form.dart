@@ -4,20 +4,23 @@ import 'categories_data.dart';
 class UserInfo extends StatefulWidget {
   final Function _submitButton;
   final Function categoryChanged;
+  final String name;
   UserInfo(
     this._submitButton,
     this.categoryChanged,
+    this.name,
   );
 
   @override
   _UserInfoState createState() {
-    return _UserInfoState(this.categoryChanged);
+    return _UserInfoState(this.categoryChanged, this.name);
   }
 }
 
 class _UserInfoState extends State<UserInfo> {
   final Function categoryChanged;
-  _UserInfoState(this.categoryChanged);
+  String name;
+  _UserInfoState(this.categoryChanged, this.name);
 
   String _dropDownValue;
 
@@ -38,6 +41,7 @@ class _UserInfoState extends State<UserInfo> {
           ),
         ),
         TextField(
+          controller: TextEditingController(text: name),
           decoration: InputDecoration(hintText: 'Name'),
           onChanged: (String text) {
             value = text;

@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   int _score = 0;
   String answer;
   bool _answered = false;
-  String _name;
+  String _name = "";
   List answersSelected = new List();
   bool _isDataLoaded = false;
   var _brightness;
@@ -125,7 +125,7 @@ class _MyAppState extends State<MyApp> {
     _noInternet = false;
     _retryCount = 0;
     setState(() {
-      getData();
+      _quizStarted(_name);
       _score = 0;
       _questionsSet.currentIndex = 0;
       _answered = false;
@@ -163,7 +163,7 @@ class _MyAppState extends State<MyApp> {
 
     // first page when app is started
     if (!_started) {
-      _body = UserInfo(_quizStarted, _categoryChanged);
+      _body = UserInfo(_quizStarted, _categoryChanged, _name);
     } else if (!this._isDataLoaded && !_noInternet) {
       // When Question is being loaded
       _body = Center(
