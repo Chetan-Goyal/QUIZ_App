@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
 
   // Quiz Data Library
   final String apiURL =
-      "https://opentdb.com/api.php?amount=5&category=18&type=multiple";
+      "https://opentdb.com/api.php?amount=5&category=any&type=multiple";
   List results;
   List data = [
     Map(),
@@ -55,11 +55,14 @@ class _MyAppState extends State<MyApp> {
   int _retryCount = 0;
   bool _noInternet = false;
   var _body;
+  String _category = "any";
 
   void getData() async {
     // To get the data from the API with recursive approach for failed attempts
     
     // Retry Max Limit = 200
+    String apiURL =
+      "https://opentdb.com/api.php?amount=5&category=" + _category + "&type=multiple";
     if (_retryCount > 200) {
       setState(() {
         _noInternet = true;
@@ -98,6 +101,7 @@ class _MyAppState extends State<MyApp> {
   void _quizStarted(String name) {
     setState(() {
       this._started = !_started;
+      this.getData();
       this._name = name;
     });
   }
@@ -142,6 +146,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _categoryChanged(String newCategory) {
+    setState(() {
+      print('New Category $newCategory');
+      _category = newCategory;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -152,7 +163,7 @@ class _MyAppState extends State<MyApp> {
 
     // first page when app is started
     if (!_started) {
-      _body = UserInfo(_quizStarted);
+      _body = UserInfo(_quizStarted, _categoryChanged);
     } else if (!this._isDataLoaded && !_noInternet) {
       // When Question is being loaded
       _body = Center(
@@ -242,6 +253,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     // getting data just after starting the quiz app
-    this.getData();
+    // this.getData();
   }
 }
