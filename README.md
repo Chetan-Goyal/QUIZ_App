@@ -46,6 +46,7 @@ To know more about the build process, [click here](https://flutter.dev/docs/depl
 
 Quiz App supports the following features-
 
+* Questions filtered according to Category Selected.
 * Automatically Refreshing Questions.
 * Sending the Results to private Excel File via [App Script](https://developers.google.com/apps-script).
 * Displaying correct answer after each question.
