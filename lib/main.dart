@@ -153,10 +153,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // Widget homeWidget() {
-  //   return ;
-  // }
-
   @override
   Widget build(BuildContext context) {
     // When Quiz App is just opened
@@ -259,7 +255,6 @@ class _MyAppState extends State<MyApp> {
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
-                        // fontFamily:
                       ),
                     ),
                   ),
@@ -281,19 +276,18 @@ class _MyAppState extends State<MyApp> {
                   title: Text("About"),
                   onTap: () {
                     print('About !!');
-                    Navigator.pushNamed(context, "/About");
+                    Navigator.popAndPushNamed(context, "/About");
                   },
                 ),
-
-                // Text("Settings"),
-                // Text("About"),
               ],
             ),
           ),
         ),
       ),
       routes: {
-        "/About": (BuildContext context) => AboutPage(),
+        "/About": (BuildContext context) {
+          return AboutPage();
+        },
       },
     );
   }
@@ -301,7 +295,5 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // getting data just after starting the quiz app
-    // this.getData();
   }
 }
