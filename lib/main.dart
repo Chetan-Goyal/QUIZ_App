@@ -10,11 +10,12 @@ import './quiz.dart';
 import './result.dart';
 import './Form.dart';
 import './Loader.dart';
+import './about.dart';
 
 // * Main Function executing the program
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // To make app always in portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -31,7 +32,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   // Quiz Data Library
   final String apiURL =
       "https://opentdb.com/api.php?amount=5&category=any&type=multiple";
@@ -59,10 +59,11 @@ class _MyAppState extends State<MyApp> {
 
   void getData() async {
     // To get the data from the API with recursive approach for failed attempts
-    
+
     // Retry Max Limit = 200
-    String apiURL =
-      "https://opentdb.com/api.php?amount=5&category=" + _category + "&type=multiple";
+    String apiURL = "https://opentdb.com/api.php?amount=5&category=" +
+        _category +
+        "&type=multiple";
     if (_retryCount > 200) {
       setState(() {
         _noInternet = true;
@@ -72,7 +73,6 @@ class _MyAppState extends State<MyApp> {
       var res = await http
           .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
       setState(() {
-
         // setting the quiz data in correct format from received data
         var resBody = json.decode(res.body);
         results = resBody["results"];
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
       });
     } catch (e) {
       if (_started) {
-        // When data is not loaded in 'Quiz Question Loading Screen' 
+        // When data is not loaded in 'Quiz Question Loading Screen'
         _retryCount += 1;
       }
       getData();
@@ -153,9 +153,12 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // Widget homeWidget() {
+  //   return ;
+  // }
+
   @override
   Widget build(BuildContext context) {
-
     // When Quiz App is just opened
     if (_brightness == null) {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
@@ -203,8 +206,8 @@ class _MyAppState extends State<MyApp> {
           _questionsSet,
           _nextQuestion);
     } else {
-      // displaying next question to the user and final Result when there 
-      // are no more questions 
+      // displaying next question to the user and final Result when there
+      // are no more questions
       _answered = true;
       _body = _questionsSet.currentIndex < _questionsSet.questions.length
           ? Quiz(
@@ -226,26 +229,72 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Ubuntu',
         primarySwatch: Colors.purple,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  'QUIZ APP',
-                  style: TextStyle(fontFamily: 'MetalMania'),
+      home: Builder(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'QUIZ APP',
+                    style: TextStyle(fontFamily: 'MetalMania'),
+                  ),
                 ),
-              ),
-              // For changing brightness (Light and Dark Mode)
-              IconButton(
-                icon: Icon(Icons.invert_colors),
-                onPressed: _themeChanged,
-              ),
-            ],
+                // For changing brightness (Light and Dark Mode)
+                IconButton(
+                  icon: Icon(Icons.invert_colors),
+                  onPressed: _themeChanged,
+                ),
+              ],
+            ),
+          ),
+          body: _body,
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                DrawerHeader(
+                  child: Center(
+                    child: Text(
+                      "Profile",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        // fontFamily:
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                  ),
+                ),
+                ListTile(
+                  title: Text("Home"),
+                  onTap: _resetQuiz,
+                ),
+                ListTile(
+                  title: Text("Settings"),
+                  onTap: () {
+                    print('Settings !!');
+                  },
+                ),
+                ListTile(
+                  title: Text("About"),
+                  onTap: () {
+                    print('About !!');
+                    Navigator.pushNamed(context, "/About");
+                  },
+                ),
+
+                // Text("Settings"),
+                // Text("About"),
+              ],
+            ),
           ),
         ),
-        body: _body,
       ),
+      routes: {
+        "/About": (BuildContext context) => AboutPage(),
+      },
     );
   }
 
