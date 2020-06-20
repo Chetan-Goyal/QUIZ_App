@@ -61,40 +61,48 @@ class _MyAppState extends State<MyApp> {
     // To get the data from the API with recursive approach for failed attempts
 
     // Retry Max Limit = 200
-    String apiURL = "https://opentdb.com/api.php?amount=5&category=" +
-        _category +
-        "&type=multiple";
-    if (_retryCount > 200) {
+    String apiURL = "https://opentdb.com/api.php?amount=5";
+    
+    if (_category != "any") {
+      apiURL = apiURL + "&category=" + _category;
+    }
+
+    apiURL = apiURL + "&type=multiple";
+
+    if (_retryCount > 10) {
       setState(() {
         _noInternet = true;
       });
     }
-    try {
-      var res = await http
-          .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
-      setState(() {
-        // setting the quiz data in correct format from received data
-        var resBody = json.decode(res.body);
-        results = resBody["results"];
-        for (int i = 0; i < 5; i++) {
-          data[i]["QuestionText"] = results[i]["question"];
-          data[i]["Options"] = [
-            ...(results[i]["incorrect_answers"]),
-            results[i]["correct_answer"]
-          ];
-          data[i]["Options"].shuffle();
-          data[i]["CorrectOption"] = results[i]["correct_answer"];
+    else {
+
+      try {
+        var res = await http
+            .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
+        setState(() {
+          // setting the quiz data in correct format from received data
+          var resBody = json.decode(res.body);
+          results = resBody["results"];
+          for (int i = 0; i < 5; i++) {
+            data[i]["QuestionText"] = results[i]["question"];
+            data[i]["Options"] = [
+              ...(results[i]["incorrect_answers"]),
+              results[i]["correct_answer"]
+            ];
+            data[i]["Options"].shuffle();
+            data[i]["CorrectOption"] = results[i]["correct_answer"];
+          }
+          _questionsSet.questions = data;
+          this._isDataLoaded = true;
+          _retryCount = 0;
+        });
+      } catch (e) {
+        if (_started) {
+          // When data is not loaded in 'Quiz Question Loading Screen'
+          _retryCount += 1;
         }
-        _questionsSet.questions = data;
-        this._isDataLoaded = true;
-        _retryCount = 0;
-      });
-    } catch (e) {
-      if (_started) {
-        // When data is not loaded in 'Quiz Question Loading Screen'
-        _retryCount += 1;
+        getData();
       }
-      getData();
     }
   }
 
@@ -121,17 +129,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _resetQuiz() {
-    _isDataLoaded = false;
-    _noInternet = false;
-    _retryCount = 0;
     setState(() {
-      _quizStarted(_name);
-      _score = 0;
-      _questionsSet.currentIndex = 0;
-      _answered = false;
-      this.answer = null;
+      _started = false;
+      _isDataLoaded = false;
+      _noInternet = false;
+      _retryCount = 0;
+        _score = 0;
+        _questionsSet.currentIndex = 0;
+        _answered = false;
+        this.answer = null;
     });
   }
+  
 
   void _themeChanged({bool question: false}) {
     setState(() {
@@ -148,13 +157,13 @@ class _MyAppState extends State<MyApp> {
 
   void _categoryChanged(String newCategory) {
     setState(() {
-      print('New Category $newCategory');
       _category = newCategory;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     // When Quiz App is just opened
     if (_brightness == null) {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
@@ -264,7 +273,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ListTile(
                   title: Text("Home"),
-                  onTap: _resetQuiz,
+                  onTap: () {
+                    _resetQuiz();
+                    Navigator.pop(context);
+                  }
                 ),
                 ListTile(
                   title: Text("Settings"),
@@ -275,7 +287,6 @@ class _MyAppState extends State<MyApp> {
                 ListTile(
                   title: Text("About"),
                   onTap: () {
-                    print('About !!');
                     Navigator.popAndPushNamed(context, "/About");
                   },
                 ),

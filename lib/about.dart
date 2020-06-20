@@ -24,7 +24,6 @@ class AboutPage extends StatelessWidget {
             Text(
               'Flutter Developer',
               style: TextStyle(
-                  // fontFamily: 'SourceSansPro',
                   letterSpacing: 2.5,
                   color: Colors.blue[300],
                   fontSize: 20,
@@ -49,7 +48,6 @@ class AboutPage extends StatelessWidget {
                       child: Text(
                         'Linkedin',
                         style: TextStyle(
-                          // fontFamily: 'SourceSansPro',
                           color: Colors.yellow[800],
                           fontSize: 20,
                         ),
@@ -69,7 +67,6 @@ class AboutPage extends StatelessWidget {
                     title: Text(
                       'harshrock616@gmail.com',
                       style: TextStyle(
-                        // fontFamily: 'SourceSansPro',
                         color: Colors.yellow[800],
                         fontSize: 20,
                       ),
