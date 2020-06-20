@@ -5,6 +5,12 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'QUIZ APP',
+          style: TextStyle(fontFamily: 'MetalMania'),
+        ),
+      ),
       backgroundColor: Colors.purple[300],
       body: SafeArea(
         child: Column(
