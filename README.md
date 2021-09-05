@@ -6,10 +6,7 @@ Quiz App is a very lightweight [flutter](https://flutter.dev/) Project with a lo
 
 You can download the QUIZ App (.apk file) in your android device from the below link-
 
-1. [Google Drive Link](https://drive.google.com/drive/folders/1IAkuSBxUYMyUbXHJLcmLnWqSu5u4cRt4?usp=sharing)
-2. [MEGA DRIVE LINK](https://mega.nz/folder/xxsFxRjC#FEVlObmSiUfyZgJPOtZBtA)
-
-(LINKS UPDATED)
+[MEGA DRIVE LINK](https://mega.nz/folder/xxsFxRjC#FEVlObmSiUfyZgJPOtZBtA)
 
 Note that there are two apk files, one comparatively 2.5x times the size of other. 
 
