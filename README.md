@@ -52,8 +52,6 @@ Quiz App supports the following features-
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
-
 ## License
 
 This project comes under the policy of [MIT License](https://choosealicense.com/licenses/mit/).
