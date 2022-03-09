@@ -1,5 +1,5 @@
 # QUIZ App
-
+[![build](https://github.com/Chetan-Goyal/QUIZ_App/actions/workflows/main.yml/badge.svg)](https://github.com/Chetan-Goyal/QUIZ_App/actions/workflows/main.yml)
 Quiz App is a very lightweight [flutter](https://flutter.dev/) Project with a lots of features like loading questions from the web and sending the results to a spreadsheet file.
 
 ## Installing the QUIZ App
