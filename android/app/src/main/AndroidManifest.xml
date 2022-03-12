@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.quizomania.quiz">
+    package="com.quizoy.app">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="${applicationName}"
-        android:label="QUIZ App"
+        android:label="Quizoy"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
