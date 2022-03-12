@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:QUIZ_App/each_result.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 
 import './questions.dart';
 import './quiz.dart';
@@ -62,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 
     // Retry Max Limit = 200
     String apiURL = "https://opentdb.com/api.php?amount=5";
-    
+
     if (_category != "any") {
       apiURL = apiURL + "&category=" + _category;
     }
@@ -73,36 +71,34 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _noInternet = true;
       });
-    }
-    else {
-
-      try {
-        var res = await http
-            .get(Uri.encodeFull(apiURL), headers: {"Accept": "application/json"});
-        setState(() {
-          // setting the quiz data in correct format from received data
-          var resBody = json.decode(res.body);
-          results = resBody["results"];
-          for (int i = 0; i < 5; i++) {
-            data[i]["QuestionText"] = results[i]["question"];
-            data[i]["Options"] = [
-              ...(results[i]["incorrect_answers"]),
-              results[i]["correct_answer"]
-            ];
-            data[i]["Options"].shuffle();
-            data[i]["CorrectOption"] = results[i]["correct_answer"];
-          }
-          _questionsSet.questions = data;
-          this._isDataLoaded = true;
-          _retryCount = 0;
-        });
-      } catch (e) {
-        if (_started) {
-          // When data is not loaded in 'Quiz Question Loading Screen'
-          _retryCount += 1;
+    } else {
+      // try {
+      var res = await Dio().get(apiURL);
+      // var res = await http.get(Uri.parse(apiURL));
+      setState(() {
+        // setting the quiz data in correct format from received data
+        var resBody = res.data;
+        results = resBody["results"];
+        for (int i = 0; i < 5; i++) {
+          data[i]["QuestionText"] = results[i]["question"];
+          data[i]["Options"] = [
+            ...(results[i]["incorrect_answers"]),
+            results[i]["correct_answer"]
+          ];
+          data[i]["Options"].shuffle();
+          data[i]["CorrectOption"] = results[i]["correct_answer"];
         }
-        getData();
-      }
+        _questionsSet.questions = data;
+        this._isDataLoaded = true;
+        _retryCount = 0;
+      });
+      //   } catch (e) {
+      //     if (_started) {
+      //       // When data is not loaded in 'Quiz Question Loading Screen'
+      //       _retryCount += 1;
+      //     }
+      //     getData();
+      //   }
     }
   }
 
@@ -134,13 +130,12 @@ class _MyAppState extends State<MyApp> {
       _isDataLoaded = false;
       _noInternet = false;
       _retryCount = 0;
-        _score = 0;
-        _questionsSet.currentIndex = 0;
-        _answered = false;
-        this.answer = null;
+      _score = 0;
+      _questionsSet.currentIndex = 0;
+      _answered = false;
+      this.answer = null;
     });
   }
-  
 
   void _themeChanged({bool question: false}) {
     setState(() {
@@ -163,7 +158,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     // When Quiz App is just opened
     if (_brightness == null) {
       _brightness = WidgetsBinding.instance.window.platformBrightness;
@@ -272,12 +266,11 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 ListTile(
-                  title: Text("Home"),
-                  onTap: () {
-                    _resetQuiz();
-                    Navigator.pop(context);
-                  }
-                ),
+                    title: Text("Home"),
+                    onTap: () {
+                      _resetQuiz();
+                      Navigator.pop(context);
+                    }),
                 ListTile(
                   title: Text("Settings"),
                   onTap: () {
