@@ -72,33 +72,33 @@ class _MyAppState extends State<MyApp> {
         _noInternet = true;
       });
     } else {
-      // try {
-      var res = await Dio().get(apiURL);
-      // var res = await http.get(Uri.parse(apiURL));
-      setState(() {
-        // setting the quiz data in correct format from received data
-        var resBody = res.data;
-        results = resBody["results"];
-        for (int i = 0; i < 5; i++) {
-          data[i]["QuestionText"] = results[i]["question"];
-          data[i]["Options"] = [
-            ...(results[i]["incorrect_answers"]),
-            results[i]["correct_answer"]
-          ];
-          data[i]["Options"].shuffle();
-          data[i]["CorrectOption"] = results[i]["correct_answer"];
+      try {
+        var res = await Dio().get(apiURL);
+
+        setState(() {
+          // setting the quiz data in correct format from received data
+          var resBody = res.data;
+          results = resBody["results"];
+          for (int i = 0; i < 5; i++) {
+            data[i]["QuestionText"] = results[i]["question"];
+            data[i]["Options"] = [
+              ...(results[i]["incorrect_answers"]),
+              results[i]["correct_answer"]
+            ];
+            data[i]["Options"].shuffle();
+            data[i]["CorrectOption"] = results[i]["correct_answer"];
+          }
+          _questionsSet.questions = data;
+          this._isDataLoaded = true;
+          _retryCount = 0;
+        });
+      } catch (e) {
+        if (_started) {
+          // When data is not loaded in 'Quiz Question Loading Screen'
+          _retryCount += 1;
         }
-        _questionsSet.questions = data;
-        this._isDataLoaded = true;
-        _retryCount = 0;
-      });
-      //   } catch (e) {
-      //     if (_started) {
-      //       // When data is not loaded in 'Quiz Question Loading Screen'
-      //       _retryCount += 1;
-      //     }
-      //     getData();
-      //   }
+        getData();
+      }
     }
   }
 

@@ -37,7 +37,6 @@ class Uploader {
     // calls the api to save the data in Google Sheet
     try {
       await Dio().get(baseURL + toParams());
-      // await http.get(baseURL + toParams());
     } catch (e) {
       print(e);
     }
