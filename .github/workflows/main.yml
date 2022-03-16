@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  PROPERTIES_PATH: "./android/key.properties"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,6 +21,10 @@ jobs:
           cache: true
           cache-key: flutter # optional, change this to force refresh cache
           cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
+      - run: |
+          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
       - name: Getting Packages
         run: flutter pub get
       - name: Build APK
