@@ -25,6 +25,7 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/upload-keystore.jks
       - name: Getting Packages
         run: flutter pub get
       - name: Build APK
