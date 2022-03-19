@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:flutter/widgets.dart';
 import 'each_question.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -21,7 +20,6 @@ class EachResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String correctAnswer = questionsObj.correctOption();
     List<Widget> a = [
       Question(

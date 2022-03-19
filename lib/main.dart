@@ -1,7 +1,7 @@
-import 'package:QUIZ_App/each_result.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quizoy/each_result.dart';
 
 import './questions.dart';
 import './quiz.dart';
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   String answer;
   bool _answered = false;
   String _name = "";
-  List answersSelected = new List();
+  List answersSelected = [];
   bool _isDataLoaded = false;
   var _brightness;
   int _retryCount = 0;
