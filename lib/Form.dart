@@ -5,10 +5,12 @@ class UserInfo extends StatefulWidget {
   final Function _submitButton;
   final Function categoryChanged;
   final String name;
+  final String category;
   UserInfo(
     this._submitButton,
     this.categoryChanged,
     this.name,
+    this.category,
   );
 
   @override
@@ -19,16 +21,23 @@ class UserInfo extends StatefulWidget {
 
 class _UserInfoState extends State<UserInfo> {
   final Function categoryChanged;
-  String name;
+  final String name;
   _UserInfoState(this.categoryChanged, this.name);
 
   String _dropDownValue;
 
   CategoriesData _dataObj = CategoriesData();
 
+  TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.name);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String value;
     return Center(
         child: Column(
       children: <Widget>[
@@ -41,15 +50,8 @@ class _UserInfoState extends State<UserInfo> {
           ),
         ),
         TextField(
-          controller: TextEditingController(text: name),
+          controller: _nameController,
           decoration: InputDecoration(hintText: 'Name'),
-          onChanged: (String text) {
-            value = text;
-            name = text;
-          },
-          onSubmitted: (String text) {
-            value = text;
-          },
         ),
         SizedBox(height: 30),
         Row(
@@ -59,10 +61,11 @@ class _UserInfoState extends State<UserInfo> {
               style: TextStyle(fontSize: 16),
             ),
             DropdownButton(
-              hint: _dropDownValue == null
+              value: getCategory(),
+              hint: _dropDownValue == null && widget.category == null
                   ? Text('Random Category')
                   : Text(
-                      _dropDownValue,
+                      getCategory() ?? '',
                       style: TextStyle(color: Colors.purple),
                     ),
               // isExpanded: true,
@@ -80,7 +83,7 @@ class _UserInfoState extends State<UserInfo> {
               ).toList(),
               onChanged: (val) {
                 setState(() {
-                  _dropDownValue = val;
+                  _dropDownValue = _dataObj.myList[val];
                   categoryChanged(_dataObj.myList[val]);
                 });
               },
@@ -90,9 +93,20 @@ class _UserInfoState extends State<UserInfo> {
         ),
         SizedBox(height: 30),
         RaisedButton(
-            onPressed: () => widget._submitButton(value),
+            onPressed: () => widget._submitButton(_nameController.text),
             child: Text("Submit")),
       ],
     ));
+  }
+
+  String getCategory() {
+    String key = _dropDownValue ?? widget.category;
+
+    final result = _dataObj.myList.entries.map((data) {
+      if (key == data.value) {
+        return data.key;
+      }
+    }).toList();
+    return result.firstWhere((element) => element != null);
   }
 }

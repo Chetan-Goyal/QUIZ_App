@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quizoy/each_result.dart';
+import 'package:quizoy/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './questions.dart';
 import './quiz.dart';
@@ -55,6 +57,8 @@ class _MyAppState extends State<MyApp> {
   var _body;
   String _category = "any";
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   void getData() async {
     // To get the data from the API with recursive approach for failed attempts
 
@@ -103,6 +107,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _quizStarted(String name) {
+    prefs.setString('name', name);
+    prefs.setString('category', _category);
     setState(() {
       this._started = !_started;
       this.getData();
@@ -137,22 +143,54 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _themeChanged({bool question: false}) {
+  void _themeChanged({bool question: false}) async {
+    await prefs.setBool('isDarkTheme', _brightness == Brightness.dark);
+
     setState(() {
-      if (_brightness == Brightness.dark) {
+      if (_brightness == Brightness.dark)
         _brightness = Brightness.light;
-      } else {
+      else
         _brightness = Brightness.dark;
-      }
       if (question) {
         this._answered = !_answered;
       }
     });
   }
 
+  void _updateTheme() {
+    if (prefs.getBool('isDarkTheme'))
+      _brightness = Brightness.dark;
+    else
+      _brightness = Brightness.light;
+    setState(() {});
+  }
+
   void _categoryChanged(String newCategory) {
+    prefs.setString('category', newCategory);
     setState(() {
-      _category = newCategory;
+      this._category = newCategory;
+    });
+  }
+
+  bool isInitialised = false;
+  SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    super.initState();
+    SharedPreferences.getInstance().then((_prefs) async {
+      prefs = _prefs;
+      _brightness =
+          prefs.getBool('isDarkTheme') ? Brightness.dark : Brightness.light;
+
+      _name = prefs.getString('name');
+      _category = prefs.getString('category');
+
+      isInitialised = true;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {});
+      });
     });
   }
 
@@ -165,7 +203,7 @@ class _MyAppState extends State<MyApp> {
 
     // first page when app is started
     if (!_started) {
-      _body = UserInfo(_quizStarted, _categoryChanged, _name);
+      _body = UserInfo(_quizStarted, _categoryChanged, _name, _category);
     } else if (!this._isDataLoaded && !_noInternet) {
       // When Question is being loaded
       _body = Center(
@@ -228,27 +266,35 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Ubuntu',
         primarySwatch: Colors.purple,
       ),
-      home: Builder(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'QUIZ APP',
-                    style: TextStyle(fontFamily: 'MetalMania'),
-                  ),
+      home: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  'QUIZ APP',
+                  style: TextStyle(fontFamily: 'MetalMania'),
                 ),
-                // For changing brightness (Light and Dark Mode)
-                IconButton(
-                  icon: Icon(Icons.invert_colors),
-                  onPressed: _themeChanged,
-                ),
-              ],
-            ),
+              ),
+              // For changing brightness (Light and Dark Mode)
+              IconButton(
+                icon: Icon(Icons.invert_colors),
+                onPressed: _themeChanged,
+              ),
+            ],
           ),
-          body: _body,
-          drawer: Drawer(
+        ),
+        body: !isInitialised
+            ? Center(
+                child: ColorLoader(
+                  colors: Colors.primaries,
+                  duration: Duration(seconds: 5),
+                ),
+              )
+            : _body,
+        drawer: Builder(builder: (context) {
+          return Drawer(
             child: ListView(
               children: <Widget>[
                 DrawerHeader(
@@ -269,12 +315,13 @@ class _MyAppState extends State<MyApp> {
                     title: Text("Home"),
                     onTap: () {
                       _resetQuiz();
-                      Navigator.pop(context);
+                      toggleDrawer();
                     }),
                 ListTile(
                   title: Text("Settings"),
                   onTap: () {
-                    print('Settings !!');
+                    Navigator.popAndPushNamed(context, "/Setting");
+                    _updateTheme();
                   },
                 ),
                 ListTile(
@@ -285,19 +332,25 @@ class _MyAppState extends State<MyApp> {
                 ),
               ],
             ),
-          ),
-        ),
+          );
+        }),
       ),
       routes: {
         "/About": (BuildContext context) {
           return AboutPage();
         },
+        "/Setting": (BuildContext context) {
+          return SettingScreen();
+        },
       },
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
+  toggleDrawer() async {
+    if (_scaffoldKey.currentState.isDrawerOpen) {
+      _scaffoldKey.currentState.openEndDrawer();
+    } else {
+      _scaffoldKey.currentState.openDrawer();
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Result_Uploader/upload.dart';
+import 'package:quizoy/Result_Uploader/upload.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Result extends StatelessWidget {
   final List answersSelected;
@@ -8,7 +9,8 @@ class Result extends StatelessWidget {
   final int result;
   final Function resetQuiz;
 
-  Result(this.answersSelected, this.questions, this.name, this.result, this.resetQuiz);
+  Result(this.answersSelected, this.questions, this.name, this.result,
+      this.resetQuiz);
 
   String get resultText {
     String finalResult;
@@ -22,21 +24,25 @@ class Result extends StatelessWidget {
       finalResult = "You are GOOD!!!";
     } else if (result < 100) {
       finalResult = "You are AMAZING!!!";
-    }else {
+    } else {
       finalResult = "WOW. You did it. Congratulations..   :D";
     }
 
+    return finalResult;
+  }
+
+  Future<void> uploadResult() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isUploadDisabled') == true) return;
     // Uploading the final result to Google spreadsheet
     Uploader uploader = Uploader(answersSelected, questions, name, result);
     uploader.upload();
-    return finalResult;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        
         // displaying the comments as per the user's attempt
         Center(
           child: Text(
@@ -48,7 +54,7 @@ class Result extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         // Displaying Score
         Center(
           child: Text(
