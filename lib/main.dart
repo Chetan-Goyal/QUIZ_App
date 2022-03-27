@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> {
             ? Brightness.dark
             : Brightness.light;
 
-        _name = prefs.getString('name');
+        _name = prefs.getString('name') ?? '';
         _category = prefs.getString('category') ?? 'any';
       } catch (e) {
         _brightness = Brightness.dark;
