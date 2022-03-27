@@ -21,12 +21,19 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
     SharedPreferences.getInstance().then((_prefs) async {
       prefs = _prefs;
-      isDarkTheme = prefs.getBool('isDarkTheme');
-      isUploadDisabled = prefs.getBool('isUploadDisabled');
-      isInitialised = true;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        setState(() {});
-      });
+      try {
+        isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+        isUploadDisabled = prefs.getBool('isUploadDisabled') ?? false;
+      } catch (e) {
+        isDarkTheme = false;
+        prefs.setBool('isDarkTheme', isDarkTheme);
+        isUploadDisabled = false;
+      } finally {
+        isInitialised = true;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {});
+        });
+      }
     });
   }
 

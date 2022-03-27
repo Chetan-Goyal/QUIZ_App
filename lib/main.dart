@@ -158,7 +158,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _updateTheme() {
-    if (prefs.getBool('isDarkTheme'))
+    if (prefs.getBool('isDarkTheme') == true)
       _brightness = Brightness.dark;
     else
       _brightness = Brightness.light;
@@ -181,16 +181,25 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     SharedPreferences.getInstance().then((_prefs) async {
       prefs = _prefs;
-      _brightness =
-          prefs.getBool('isDarkTheme') ? Brightness.dark : Brightness.light;
 
-      _name = prefs.getString('name');
-      _category = prefs.getString('category');
+      try {
+        _brightness = prefs.getBool('isDarkTheme') == true
+            ? Brightness.dark
+            : Brightness.light;
 
-      isInitialised = true;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        setState(() {});
-      });
+        _name = prefs.getString('name');
+        _category = prefs.getString('category') ?? 'any';
+      } catch (e) {
+        _brightness = Brightness.dark;
+        prefs.setBool('isDarkTheme', false);
+        _category = 'any';
+        prefs.setString('category', _category);
+      } finally {
+        isInitialised = true;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {});
+        });
+      }
     });
   }
 
